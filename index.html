@@ -294,26 +294,31 @@
   .contact-wrap{display:grid;grid-template-columns:1fr;gap:48px;}
   @media (min-width:1024px){ .contact-wrap{grid-template-columns:1.15fr .85fr;} }
 
-  .platform-card{
-    display:flex;align-items:flex-start;gap:16px;padding:20px;text-decoration:none;color:inherit;
+  .contact-form{padding:32px 28px;}
+  .contact-form:hover{transform:none;box-shadow:var(--shadow-sm);border-color:var(--line);}
+  .contact-form h3{font-size:1.3rem;color:var(--dark);}
+  .form-lede{margin-top:8px;color:var(--ink-soft);font-size:.96rem;}
+  .form-grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:24px;}
+  @media (min-width:640px){
+    .form-grid{grid-template-columns:1fr 1fr;}
+    .field-full{grid-column:1/-1;}
   }
-  .platform-glyph{
-    width:48px;height:48px;border-radius:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  .field{display:flex;flex-direction:column;gap:7px;min-width:0;}
+  .field label{font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-faint);}
+  .field .req{color:var(--crimson);}
+  .field input,.field select,.field textarea{
+    font:inherit;font-size:.95rem;width:100%;color:var(--dark);background:var(--surface);
+    border:1px solid var(--line-strong);border-radius:var(--radius-sm);padding:12px 14px;
+    transition:border-color .2s var(--ease),box-shadow .2s var(--ease);
   }
-  .platform-glyph svg{width:26px;height:26px;}
-  .platform-body{flex:1;min-width:0;}
-  .platform-body h3{font-size:1rem;color:var(--dark);}
-  .platform-url{
-    display:block;margin-top:4px;font-size:.86rem;color:var(--ink-faint);word-break:break-word;
+  .field textarea{resize:vertical;min-height:118px;}
+  .field input:focus,.field select:focus,.field textarea:focus{
+    outline:none;border-color:var(--crimson);box-shadow:0 0 0 3px rgba(242,0,57,.13);
   }
-  .platform-action{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-weight:700;font-size:.86rem;color:var(--crimson);}
-  .platform-action .icon{width:15px;height:15px;}
-  .qr-box{
-    display:none;flex-shrink:0;width:112px;height:112px;border-radius:var(--radius-sm);border:1px dashed var(--line-strong);
-    background:var(--surface-2);align-items:center;justify-content:center;text-align:center;padding:8px;
-  }
-  .qr-box span{font-size:.66rem;line-height:1.35;color:var(--ink-faint);}
-  @media (min-width:768px){ .qr-box{display:flex;} }
+  .field input:user-invalid,.field textarea:user-invalid{border-color:var(--crimson);}
+  .form-actions{display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin-top:24px;}
+  .form-note{font-size:.82rem;color:var(--ink-faint);max-width:34ch;}
+  .form-status{margin-top:16px;font-size:.92rem;font-weight:600;color:var(--dark);}
 
   .schedule-card{padding:32px 28px;background:var(--dark);color:#fff;border:none;}
   .schedule-card h3{color:#fff;font-size:1.3rem;}
@@ -726,67 +731,70 @@
 
       <div class="contact-wrap">
         <div>
-          <div class="grid grid-2">
-            <a class="card platform-card" href="#" rel="noopener noreferrer" aria-label="Message us on Facebook (link to be added)">
-              <span class="platform-glyph" style="background:#1877F2;">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M14.5 8.5H16V6h-2c-1.9 0-3.2 1.4-3.2 3.4V11H9v2.5h1.8V21h2.6v-7.5H15l.5-2.5h-2.1V9.6c0-.7.3-1.1 1.1-1.1Z"/></svg>
-              </span>
-              <span class="platform-body">
-                <h3>Facebook</h3>
-                <span class="platform-url">[Facebook URL]</span>
-                <span class="platform-action">Message us<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
-              </span>
-              <span class="qr-box"><span>QR appears once your Facebook link is added</span></span>
-            </a>
+          <!--
+            Static site: this form has no server. On submit it composes a pre-filled
+            email to contact@yourtravelguide.co and hands it to the visitor's mail client.
+            To collect submissions directly instead, set an action/method on the <form>
+            (a Formspree endpoint or a Vercel serverless function) and delete the
+            "enquiry form" block in the script at the bottom of this file.
+          -->
+          <form class="card contact-form" id="enquiryForm" novalidate>
+            <h3>Send Us Your Trip Details</h3>
+            <p class="form-lede">Tell us where you&rsquo;re going and what you need. A travel consultant will get back to you.</p>
 
-            <a class="card platform-card" href="#" rel="noopener noreferrer" aria-label="Message us on WhatsApp (link to be added)">
-              <span class="platform-glyph" style="background:#25D366;">
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path fill="#fff" d="M12 3.5a8.4 8.4 0 0 0-7.2 12.7L3.5 20.5l4.5-1.2A8.4 8.4 0 1 0 12 3.5Zm0 1.7a6.7 6.7 0 0 1 5.6 10.3l-.2.3.6 2.3-2.3-.6-.3.2a6.7 6.7 0 1 1-3.4-12.5Z"/><path fill="#fff" d="M9.4 8.2c-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.5.1-.7.4-.2.3-.9.9-.9 2.1 0 1.2.9 2.4 1 2.5.1.2 1.8 2.8 4.3 3.7 2.1.8 2.5.6 3 .6.4 0 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1-.1-.1-.3-.2-.6-.3-.3-.2-1.4-.7-1.6-.8-.2-.1-.4-.1-.6.1-.2.3-.6.8-.8 1-.1.2-.3.2-.6.1-.3-.2-1.1-.4-2.1-1.3-.8-.7-1.3-1.6-1.4-1.9-.1-.3 0-.4.1-.6l.4-.5c.1-.1.1-.3.2-.4 0-.2 0-.3 0-.4-.1-.1-.6-1.4-.8-1.9Z"/></svg>
-              </span>
-              <span class="platform-body">
-                <h3>WhatsApp</h3>
-                <span class="platform-url">[WhatsApp URL]</span>
-                <span class="platform-action">Chat with us<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
-              </span>
-              <span class="qr-box"><span>QR appears once your WhatsApp link is added</span></span>
-            </a>
+            <div class="form-grid">
+              <div class="field">
+                <label for="f-name">Full name <span class="req" aria-hidden="true">*</span></label>
+                <input id="f-name" name="name" type="text" autocomplete="name" required>
+              </div>
+              <div class="field">
+                <label for="f-email">Email <span class="req" aria-hidden="true">*</span></label>
+                <input id="f-email" name="email" type="email" autocomplete="email" required>
+              </div>
+              <div class="field">
+                <label for="f-phone">Phone</label>
+                <input id="f-phone" name="phone" type="tel" autocomplete="tel">
+              </div>
+              <div class="field">
+                <label for="f-service">Service needed</label>
+                <select id="f-service" name="service">
+                  <option value="">Select a service</option>
+                  <option>Private Tours</option>
+                  <option>Airport and City Transfers</option>
+                  <option>Visa Assistance</option>
+                  <option>Tour Packages</option>
+                  <option>Corporate and Group Tours</option>
+                  <option>Flight Tickets</option>
+                  <option>Not sure yet &mdash; help me choose</option>
+                </select>
+              </div>
+              <div class="field field-full">
+                <label for="f-destination">Destination</label>
+                <input id="f-destination" name="destination" type="text" placeholder="e.g. Japan, Singapore, Vietnam">
+              </div>
+              <div class="field">
+                <label for="f-dates">Travel dates</label>
+                <input id="f-dates" name="dates" type="text" placeholder="e.g. 12&ndash;19 March 2027">
+              </div>
+              <div class="field">
+                <label for="f-travellers">Number of travelers</label>
+                <input id="f-travellers" name="travellers" type="number" min="1" step="1" inputmode="numeric" placeholder="2">
+              </div>
+              <div class="field field-full">
+                <label for="f-message">Message</label>
+                <textarea id="f-message" name="message" placeholder="Anything else we should know about your trip?"></textarea>
+              </div>
+            </div>
 
-            <a class="card platform-card" href="#" rel="noopener noreferrer" aria-label="Message us on Viber (link to be added)">
-              <span class="platform-glyph" style="background:#7360F2;">
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path fill="#fff" d="M12.1 3.5c-4.6 0-7.9 3.2-7.9 7.6 0 2.5 1.1 4.6 2.9 6l-.5 3 3.1-1.6c.8.2 1.6.3 2.4.3 4.6 0 7.9-3.2 7.9-7.6 0-4.5-3.3-7.7-7.9-7.7Zm4 8.3c-.1.4-.8 1-1.4 1.1-.4.1-.9.1-2.7-.6-2.3-.9-3.8-3.1-3.9-3.3-.1-.2-.9-1.2-.9-2.3 0-1.1.6-1.6.8-1.9.2-.2.5-.3.6-.3h.5c.2 0 .4 0 .5.4.2.5.6 1.7.7 1.8.1.1.1.3 0 .4-.1.2-.1.3-.3.5-.1.2-.3.3-.4.5-.1.2-.3.4-.1.7.2.3.8 1.4 1.7 2.2 1.2 1 2.1 1.4 2.5 1.5.2.1.4.1.5-.1.2-.2.6-.7.8-1 .2-.2.3-.2.6-.1.2.1 1.5.7 1.8.9.3.1.4.2.5.3 0 .1 0 .6-.1 1Z"/></svg>
-              </span>
-              <span class="platform-body">
-                <h3>Viber</h3>
-                <span class="platform-url">[Viber URL]</span>
-                <span class="platform-action">Chat with us<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
-              </span>
-              <span class="qr-box"><span>QR appears once your Viber link is added</span></span>
-            </a>
-
-            <a class="card platform-card" href="#" rel="noopener noreferrer" aria-label="Follow us on Instagram (link to be added)">
-              <span class="platform-glyph" style="background:linear-gradient(135deg,#f9ce34,#ee2a7b,#6228d7);">
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="5" stroke="#fff" stroke-width="1.7"/><circle cx="12" cy="12" r="3.6" stroke="#fff" stroke-width="1.7"/><circle cx="16.6" cy="7.4" r="1.1" fill="#fff"/></svg>
-              </span>
-              <span class="platform-body">
-                <h3>Instagram</h3>
-                <span class="platform-url">[Instagram URL]</span>
-                <span class="platform-action">Follow us<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
-              </span>
-              <span class="qr-box"><span>QR appears once your Instagram link is added</span></span>
-            </a>
-
-            <a class="card platform-card" href="#" rel="noopener noreferrer" aria-label="Follow us on TikTok (link to be added)" style="grid-column:1/-1;">
-              <span class="platform-glyph" style="background:#010101;">
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path fill="#25F4EE" d="M15.5 3.2c.6 1.7 1.9 2.9 3.7 3.2v2.5c-1.3 0-2.6-.4-3.7-1.1v6.6a5.1 5.1 0 1 1-4.4-5v2.6a2.5 2.5 0 1 0 1.8 2.4V3.2Z" transform="translate(-.4,-.3)"/><path fill="#FE2C55" d="M15.9 3.2c.6 1.7 1.9 2.9 3.7 3.2v2.5c-1.3 0-2.6-.4-3.7-1.1v6.6a5.1 5.1 0 1 1-4.4-5v2.6a2.5 2.5 0 1 0 1.8 2.4V3.2Z" transform="translate(.4,.3)"/><path fill="#fff" d="M15.7 3.2c.6 1.7 1.9 2.9 3.7 3.2v2.5c-1.3 0-2.6-.4-3.7-1.1v6.6a5.1 5.1 0 1 1-4.4-5v2.6a2.5 2.5 0 1 0 1.8 2.4V3.2Z"/></svg>
-              </span>
-              <span class="platform-body">
-                <h3>TikTok</h3>
-                <span class="platform-url">[TikTok URL]</span>
-                <span class="platform-action">Follow us<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
-              </span>
-              <span class="qr-box"><span>QR appears once your TikTok link is added</span></span>
-            </a>
-          </div>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">
+                Send Enquiry
+                <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg>
+              </button>
+              <p class="form-note">Opens your email app with the details filled in.</p>
+            </div>
+            <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+          </form>
         </div>
 
         <div>
@@ -816,7 +824,11 @@
             </div>
             <div class="info-row">
               <span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg></span>
-              <div><div class="info-label">Hours</div><div class="info-value">[Operating hours]</div></div>
+              <div>
+                <div class="info-label">Hours</div>
+                <div class="info-value">Chat support &middot; 8:00 AM &ndash; 12:00 MN daily</div>
+                <div class="info-value">Onsite office &middot; 8:00 AM &ndash; 8:00 PM daily</div>
+              </div>
             </div>
           </div>
         </div>
@@ -965,6 +977,41 @@
     }
   }, {passive:true});
   updateRoute();
+
+  // Enquiry form — no server, so compose a pre-filled email instead.
+  // Replace this block if you wire the form up to a real endpoint.
+  var form = document.getElementById('enquiryForm');
+  if(form){
+    var status = document.getElementById('formStatus');
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      if(!form.checkValidity()){
+        form.reportValidity();
+        return;
+      }
+      var get = function(id){ return (document.getElementById(id).value || '').trim(); };
+      var rows = [
+        ['Name', get('f-name')],
+        ['Email', get('f-email')],
+        ['Phone', get('f-phone')],
+        ['Service needed', get('f-service')],
+        ['Destination', get('f-destination')],
+        ['Travel dates', get('f-dates')],
+        ['Number of travelers', get('f-travellers')]
+      ].filter(function(r){ return r[1]; });
+
+      var body = rows.map(function(r){ return r[0] + ': ' + r[1]; }).join('\n');
+      var msg = get('f-message');
+      if(msg) body += '\n\nMessage:\n' + msg;
+
+      var subject = 'Trip enquiry' + (get('f-destination') ? ' — ' + get('f-destination') : '');
+      window.location.href = 'mailto:contact@yourtravelguide.co'
+        + '?subject=' + encodeURIComponent(subject)
+        + '&body=' + encodeURIComponent(body);
+
+      if(status) status.textContent = 'Opening your email app with these details. If nothing happens, email us directly at contact@yourtravelguide.co.';
+    });
+  }
 })();
 </script>
 </body>
