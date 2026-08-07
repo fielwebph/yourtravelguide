@@ -238,12 +238,25 @@
   /* ---------- Destinations ---------- */
   .dest-card{overflow:hidden;position:relative;}
   .dest-media{
-    aspect-ratio:4/3;background:var(--surface-2);border-bottom:1px dashed var(--line-strong);
-    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--ink-faint);
-    text-align:center;padding:20px;
+    position:relative;aspect-ratio:4/3;background:var(--surface-2);border-bottom:1px solid var(--line);
+    overflow:hidden;color:var(--ink-faint);
   }
+  /* opacity, not display:none — a display:none image is never fetched, so it
+     could never load and reveal itself. Hidden this way it still downloads. */
+  .dest-media img{
+    position:relative;z-index:1;width:100%;height:100%;object-fit:cover;display:block;
+    opacity:0;transition:opacity .35s var(--ease);
+  }
+  .dest-media.has-photo img{opacity:1;}
+  /* The placeholder is the default state, so a card is never blank while a
+     lazy image is still pending. JS adds .has-photo once one actually loads. */
+  .dest-media-empty{
+    display:flex;position:absolute;inset:0;z-index:0;flex-direction:column;align-items:center;justify-content:center;
+    gap:10px;text-align:center;padding:20px;
+  }
+  .dest-media:not(.has-photo){border-bottom-style:dashed;border-bottom-color:var(--line-strong);}
   .dest-media .icon{width:30px;height:30px;}
-  .dest-media span{font-size:.82rem;font-weight:600;}
+  .dest-media-empty span{font-size:.82rem;font-weight:600;}
   .dest-body{padding:22px 24px 26px;}
   .dest-tag{
     display:inline-block;font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
@@ -551,7 +564,10 @@
         </button>
         <ul class="dest-track" id="destTrack" tabindex="0" aria-label="Destination guides, scroll horizontally to browse">
           <li class="card dest-card">
-            <div class="dest-media"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Japan photo to be added</span></div>
+            <div class="dest-media">
+              <img src="assets/destinations/japan.jpg" alt="Street scene in Japan" loading="lazy" decoding="async" width="800" height="600">
+              <span class="dest-media-empty" aria-hidden="true"><svg class="icon"><use href="#i-image"/></svg><span>Japan photo to be added</span></span>
+            </div>
             <div class="dest-body">
               <span class="dest-tag">Featured</span>
               <h3>Japan</h3>
@@ -559,7 +575,10 @@
             </div>
           </li>
           <li class="card dest-card">
-            <div class="dest-media"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>South Korea photo to be added</span></div>
+            <div class="dest-media">
+              <img src="assets/destinations/south-korea.jpg" alt="Cityscape in South Korea" loading="lazy" decoding="async" width="800" height="600">
+              <span class="dest-media-empty" aria-hidden="true"><svg class="icon"><use href="#i-image"/></svg><span>South Korea photo to be added</span></span>
+            </div>
             <div class="dest-body">
               <span class="dest-tag">Featured</span>
               <h3>South Korea</h3>
@@ -567,7 +586,10 @@
             </div>
           </li>
           <li class="card dest-card">
-            <div class="dest-media"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Taiwan photo to be added</span></div>
+            <div class="dest-media">
+              <img src="assets/destinations/taiwan.jpg" alt="Night market in Taiwan" loading="lazy" decoding="async" width="800" height="600">
+              <span class="dest-media-empty" aria-hidden="true"><svg class="icon"><use href="#i-image"/></svg><span>Taiwan photo to be added</span></span>
+            </div>
             <div class="dest-body">
               <span class="dest-tag">Featured</span>
               <h3>Taiwan</h3>
@@ -575,7 +597,10 @@
             </div>
           </li>
           <li class="card dest-card">
-            <div class="dest-media"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Thailand photo to be added</span></div>
+            <div class="dest-media">
+              <img src="assets/destinations/thailand.jpg" alt="Temple in Thailand" loading="lazy" decoding="async" width="800" height="600">
+              <span class="dest-media-empty" aria-hidden="true"><svg class="icon"><use href="#i-image"/></svg><span>Thailand photo to be added</span></span>
+            </div>
             <div class="dest-body">
               <span class="dest-tag">Featured</span>
               <h3>Thailand</h3>
@@ -583,7 +608,10 @@
             </div>
           </li>
           <li class="card dest-card">
-            <div class="dest-media"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Singapore photo to be added</span></div>
+            <div class="dest-media">
+              <img src="assets/destinations/singapore.jpg" alt="Skyline in Singapore" loading="lazy" decoding="async" width="800" height="600">
+              <span class="dest-media-empty" aria-hidden="true"><svg class="icon"><use href="#i-image"/></svg><span>Singapore photo to be added</span></span>
+            </div>
             <div class="dest-body">
               <span class="dest-tag">Featured</span>
               <h3>Singapore</h3>
@@ -591,7 +619,10 @@
             </div>
           </li>
           <li class="card dest-card">
-            <div class="dest-media"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>China photo to be added</span></div>
+            <div class="dest-media">
+              <img src="assets/destinations/china.jpg" alt="Landmark in China" loading="lazy" decoding="async" width="800" height="600">
+              <span class="dest-media-empty" aria-hidden="true"><svg class="icon"><use href="#i-image"/></svg><span>China photo to be added</span></span>
+            </div>
             <div class="dest-body">
               <span class="dest-tag">Featured</span>
               <h3>China</h3>
@@ -599,7 +630,10 @@
             </div>
           </li>
           <li class="card dest-card">
-            <div class="dest-media"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Vietnam photo to be added</span></div>
+            <div class="dest-media">
+              <img src="assets/destinations/vietnam.jpg" alt="Landscape in Vietnam" loading="lazy" decoding="async" width="800" height="600">
+              <span class="dest-media-empty" aria-hidden="true"><svg class="icon"><use href="#i-image"/></svg><span>Vietnam photo to be added</span></span>
+            </div>
             <div class="dest-body">
               <span class="dest-tag">Featured</span>
               <h3>Vietnam</h3>
@@ -980,6 +1014,18 @@
     }
   }, {passive:true});
   updateRoute();
+
+  /* Destination photos are optional. Any card whose image is missing or
+     fails to load falls back to the "photo to be added" placeholder, so
+     the carousel never shows a broken image. Drop a file into
+     assets/destinations/<country>.jpg and it appears automatically. */
+  Array.prototype.forEach.call(document.querySelectorAll('.dest-media'), function(media){
+    var img = media.querySelector('img');
+    if(!img) return;
+    var reveal = function(){ if(img.naturalWidth) media.classList.add('has-photo'); };
+    if(img.complete) reveal();
+    else img.addEventListener('load', reveal);
+  });
 
   /* ---------------------------------------------------------------
      Enquiry form → contact@yourtravelguide.co
