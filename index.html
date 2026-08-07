@@ -786,12 +786,15 @@
               </div>
             </div>
 
+            <!-- honeypot: hidden from people, tempting to bots. Web3Forms drops anything that fills it. -->
+            <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none;">
+
             <div class="form-actions">
-              <button type="submit" class="btn btn-primary">
+              <button type="submit" class="btn btn-primary" id="formSubmit">
                 Send Enquiry
                 <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg>
               </button>
-              <p class="form-note">Opens your email app with the details filled in.</p>
+              <p class="form-note">We usually reply within one business day.</p>
             </div>
             <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
           </form>
@@ -978,38 +981,91 @@
   }, {passive:true});
   updateRoute();
 
-  // Enquiry form — no server, so compose a pre-filled email instead.
-  // Replace this block if you wire the form up to a real endpoint.
+  /* ---------------------------------------------------------------
+     Enquiry form → contact@yourtravelguide.co
+
+     SETUP (one step, ~2 minutes):
+       1. Go to https://web3forms.com and enter contact@yourtravelguide.co
+       2. They email you an access key
+       3. Replace the placeholder below with that key, commit, and redeploy
+
+     Until a real key is in place the form falls back to opening the
+     visitor's email app, so it is never broken — just less seamless.
+  --------------------------------------------------------------- */
+  var WEB3FORMS_KEY = 'PASTE_YOUR_WEB3FORMS_ACCESS_KEY_HERE';
+  var CONTACT_EMAIL = 'contact@yourtravelguide.co';
+
   var form = document.getElementById('enquiryForm');
   if(form){
     var status = document.getElementById('formStatus');
+    var submitBtn = document.getElementById('formSubmit');
+
+    var val = function(id){ var el = document.getElementById(id); return el ? (el.value || '').trim() : ''; };
+    var say = function(text){ if(status) status.textContent = text; };
+
+    var fields = function(){
+      return [
+        ['Name', val('f-name')],
+        ['Email', val('f-email')],
+        ['Phone', val('f-phone')],
+        ['Service needed', val('f-service')],
+        ['Destination', val('f-destination')],
+        ['Travel dates', val('f-dates')],
+        ['Number of travelers', val('f-travellers')]
+      ].filter(function(r){ return r[1]; });
+    };
+
+    var subjectLine = function(){
+      return 'Trip enquiry' + (val('f-destination') ? ' — ' + val('f-destination') : '');
+    };
+
+    var mailtoFallback = function(){
+      var body = fields().map(function(r){ return r[0] + ': ' + r[1]; }).join('\n');
+      if(val('f-message')) body += '\n\nMessage:\n' + val('f-message');
+      window.location.href = 'mailto:' + CONTACT_EMAIL
+        + '?subject=' + encodeURIComponent(subjectLine())
+        + '&body=' + encodeURIComponent(body);
+      say('Opening your email app with these details. If nothing happens, email us at ' + CONTACT_EMAIL + '.');
+    };
+
     form.addEventListener('submit', function(e){
       e.preventDefault();
-      if(!form.checkValidity()){
-        form.reportValidity();
+      if(!form.checkValidity()){ form.reportValidity(); return; }
+
+      // No key configured yet — degrade gracefully rather than fail silently.
+      if(!WEB3FORMS_KEY || WEB3FORMS_KEY.indexOf('PASTE_YOUR') === 0){
+        mailtoFallback();
         return;
       }
-      var get = function(id){ return (document.getElementById(id).value || '').trim(); };
-      var rows = [
-        ['Name', get('f-name')],
-        ['Email', get('f-email')],
-        ['Phone', get('f-phone')],
-        ['Service needed', get('f-service')],
-        ['Destination', get('f-destination')],
-        ['Travel dates', get('f-dates')],
-        ['Number of travelers', get('f-travellers')]
-      ].filter(function(r){ return r[1]; });
 
-      var body = rows.map(function(r){ return r[0] + ': ' + r[1]; }).join('\n');
-      var msg = get('f-message');
-      if(msg) body += '\n\nMessage:\n' + msg;
+      var payload = { access_key: WEB3FORMS_KEY, subject: subjectLine(), from_name: 'Your Travel Guide website' };
+      fields().forEach(function(r){ payload[r[0]] = r[1]; });
+      if(val('f-message')) payload.Message = val('f-message');
+      if(val('f-email')) payload.replyto = val('f-email');
+      var bot = form.querySelector('[name="botcheck"]');
+      if(bot && bot.checked) return; // bot filled the honeypot
 
-      var subject = 'Trip enquiry' + (get('f-destination') ? ' — ' + get('f-destination') : '');
-      window.location.href = 'mailto:contact@yourtravelguide.co'
-        + '?subject=' + encodeURIComponent(subject)
-        + '&body=' + encodeURIComponent(body);
+      submitBtn.disabled = true;
+      say('Sending…');
 
-      if(status) status.textContent = 'Opening your email app with these details. If nothing happens, email us directly at contact@yourtravelguide.co.';
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+      .then(function(res){ return res.json().then(function(data){ return { ok: res.ok, data: data }; }); })
+      .then(function(r){
+        if(r.ok && r.data && r.data.success){
+          form.reset();
+          say('Thank you — your enquiry is on its way. A travel consultant will get back to you shortly.');
+        } else {
+          say('Sorry, that did not go through. Please email us directly at ' + CONTACT_EMAIL + '.');
+        }
+      })
+      .catch(function(){
+        say('Sorry, that did not go through. Please email us directly at ' + CONTACT_EMAIL + '.');
+      })
+      .then(function(){ submitBtn.disabled = false; });
     });
   }
 })();
