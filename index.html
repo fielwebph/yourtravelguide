@@ -1161,6 +1161,39 @@
         var el = document.elementFromPoint(pt[0], pt[1]);
         corner.push(el ? label(el) + (el.shadowRoot ? ' [shadowRoot]' : '') : 'null');
       });
+      // Hunt for the widget's own controls by their visible text, walking into
+      // any open shadow roots. Tells us both whether we can reach them at all
+      // and what to target if we can.
+      var found = [];
+      var walk = function(root, depth, inShadow){
+        if(depth > 12 || found.length > 8) return;
+        var kids = root.children || [];
+        for(var i = 0; i < kids.length; i++){
+          var el = kids[i];
+          var tag = el.tagName;
+          // Skip our own source and our own copy, or this finds itself.
+          if(tag === 'SCRIPT' || tag === 'STYLE' || tag === 'NOSCRIPT' || tag === 'TEMPLATE') continue;
+          if(!inShadow && el.closest && (el.closest('#main') || el.closest('#siteHeader') || el.closest('footer'))) continue;
+          var own = '';
+          for(var n = 0; n < el.childNodes.length; n++){
+            if(el.childNodes[n].nodeType === 3) own += el.childNodes[n].nodeValue;
+          }
+          if(/start chat|chat now|send us a message/i.test(own)){
+            var cs = getComputedStyle(el);
+            found.push({
+              text: own.trim().slice(0, 40),
+              el: label(el),
+              inShadowRoot: inShadow,
+              color: cs.color,
+              background: cs.backgroundColor
+            });
+          }
+          if(el.shadowRoot) walk(el.shadowRoot, depth + 1, true);
+          walk(el, depth + 1, inShadow);
+        }
+      };
+      try { walk(document.body, 0, false); } catch(err){ found.push({error:String(err)}); }
+
       var report = {
         widgetType: typeof w,
         widgetOwn: w ? names(w) : null,
@@ -1173,7 +1206,11 @@
         bodyTopLevel: [].map.call(document.body.children, function(el){
           var cs = getComputedStyle(el);
           return cs.position === 'fixed' ? label(el) + ' (fixed)' : null;
-        }).filter(Boolean)
+        }).filter(Boolean),
+        startChatButtons: found,
+        reachable: found.length > 0
+          ? 'yes — CSS/JS can target these'
+          : 'not found in this document (likely inside a cross-origin iframe)'
       };
       var box = document.createElement('pre');
       box.textContent = JSON.stringify(report, null, 2);
