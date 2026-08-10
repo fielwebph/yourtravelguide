@@ -321,31 +321,35 @@
   .contact-wrap{display:grid;grid-template-columns:1fr;gap:48px;}
   @media (min-width:1024px){ .contact-wrap{grid-template-columns:1.15fr .85fr;} }
 
-  .contact-form{padding:32px 28px;}
-  .contact-form:hover{transform:none;box-shadow:var(--shadow-sm);border-color:var(--line);}
-  .contact-form h3{font-size:1.3rem;color:var(--dark);}
-  .form-lede{margin-top:8px;color:var(--ink-soft);font-size:.96rem;}
-  .form-grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:24px;}
-  @media (min-width:640px){
-    .form-grid{grid-template-columns:1fr 1fr;}
-    .field-full{grid-column:1/-1;}
+  .contact-grid{display:grid;grid-template-columns:1fr;gap:20px;}
+  @media (min-width:640px){ .contact-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (min-width:1024px){ .contact-grid{grid-template-columns:repeat(4,1fr);} }
+  .contact-tile{padding:28px 24px;}
+  .contact-tile .icon-tile{width:46px;height:46px;border-radius:12px;}
+  .contact-tile-label{
+    margin-top:18px;font-size:.76rem;font-weight:800;letter-spacing:.07em;
+    text-transform:uppercase;color:var(--ink-faint);
   }
-  .field{display:flex;flex-direction:column;gap:7px;min-width:0;}
-  .field label{font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-faint);}
-  .field .req{color:var(--crimson);}
-  .field input,.field select,.field textarea{
-    font:inherit;font-size:.95rem;width:100%;color:var(--dark);background:var(--surface);
-    border:1px solid var(--line-strong);border-radius:var(--radius-sm);padding:12px 14px;
-    transition:border-color .2s var(--ease),box-shadow .2s var(--ease);
+  .contact-tile-value{
+    display:block;margin-top:7px;font-weight:600;color:var(--dark);font-size:.96rem;
+    line-height:1.5;text-decoration:none;overflow-wrap:break-word;
   }
-  .field textarea{resize:vertical;min-height:118px;}
-  .field input:focus,.field select:focus,.field textarea:focus{
-    outline:none;border-color:var(--crimson);box-shadow:0 0 0 3px rgba(242,0,57,.13);
+  a.contact-tile-value:hover{color:var(--crimson);}
+
+  .schedule-panel{
+    margin-top:24px;padding:34px 32px;background:var(--dark);border:none;color:#fff;
+    display:grid;grid-template-columns:1fr;gap:26px;align-items:center;
   }
-  .field input:user-invalid,.field textarea:user-invalid{border-color:var(--crimson);}
-  .form-actions{display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin-top:24px;}
-  .form-note{font-size:.82rem;color:var(--ink-faint);max-width:34ch;}
-  .form-status{margin-top:16px;font-size:.92rem;font-weight:600;color:var(--dark);}
+  .schedule-panel:hover{transform:none;box-shadow:var(--shadow-sm);}
+  @media (min-width:860px){ .schedule-panel{grid-template-columns:1fr auto;gap:40px;} }
+  .schedule-panel .icon-tile{
+    width:46px;height:46px;border-radius:12px;background:rgba(255,255,255,.12);color:#fff;
+  }
+  .schedule-panel h3{margin-top:16px;color:#fff;font-size:1.35rem;}
+  .schedule-panel p{margin-top:10px;color:rgba(255,255,255,.72);font-size:.98rem;max-width:52ch;}
+  .schedule-panel-note{margin-top:12px;font-size:.82rem;color:rgba(255,255,255,.5);}
+  .schedule-panel-action{display:flex;flex-direction:column;align-items:flex-start;}
+  @media (min-width:860px){ .schedule-panel-action{align-items:flex-end;} }
 
   .schedule-card{padding:32px 28px;background:var(--dark);color:#fff;border:none;}
   .schedule-card h3{color:#fff;font-size:1.3rem;}
@@ -778,111 +782,42 @@
         <a href="#contact" class="btn btn-ghost" data-open-chat>Chat With a Travel Expert</a>
       </div>
 
-      <div class="contact-wrap">
-        <div>
-          <!--
-            Static site: this form has no server. On submit it composes a pre-filled
-            email to contact@yourtravelguide.co and hands it to the visitor's mail client.
-            To collect submissions directly instead, set an action/method on the <form>
-            (a Formspree endpoint or a Vercel serverless function) and delete the
-            "enquiry form" block in the script at the bottom of this file.
-          -->
-          <form class="card contact-form" id="enquiryForm" novalidate>
-            <h3>Send Us Your Trip Details</h3>
-            <p class="form-lede">Tell us where you&rsquo;re going and what you need. A travel consultant will get back to you.</p>
-
-            <div class="form-grid">
-              <div class="field">
-                <label for="f-name">Full name <span class="req" aria-hidden="true">*</span></label>
-                <input id="f-name" name="name" type="text" autocomplete="name" required>
-              </div>
-              <div class="field">
-                <label for="f-email">Email <span class="req" aria-hidden="true">*</span></label>
-                <input id="f-email" name="email" type="email" autocomplete="email" required>
-              </div>
-              <div class="field">
-                <label for="f-phone">Phone</label>
-                <input id="f-phone" name="phone" type="tel" autocomplete="tel">
-              </div>
-              <div class="field">
-                <label for="f-service">Service needed</label>
-                <select id="f-service" name="service">
-                  <option value="">Select a service</option>
-                  <option>Private Tours</option>
-                  <option>Airport and City Transfers</option>
-                  <option>Visa Assistance</option>
-                  <option>Tour Packages</option>
-                  <option>Corporate and Group Tours</option>
-                  <option>Flight Tickets</option>
-                  <option>Not sure yet &mdash; help me choose</option>
-                </select>
-              </div>
-              <div class="field field-full">
-                <label for="f-destination">Destination</label>
-                <input id="f-destination" name="destination" type="text" placeholder="e.g. Japan, Singapore, Vietnam">
-              </div>
-              <div class="field">
-                <label for="f-dates">Travel dates</label>
-                <input id="f-dates" name="dates" type="text" placeholder="e.g. 12&ndash;19 March 2027">
-              </div>
-              <div class="field">
-                <label for="f-travellers">Number of travelers</label>
-                <input id="f-travellers" name="travellers" type="number" min="1" step="1" inputmode="numeric" placeholder="2">
-              </div>
-              <div class="field field-full">
-                <label for="f-message">Message</label>
-                <textarea id="f-message" name="message" placeholder="Anything else we should know about your trip?"></textarea>
-              </div>
-            </div>
-
-            <!-- honeypot: hidden from people, tempting to bots. Web3Forms drops anything that fills it. -->
-            <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none;">
-
-            <div class="form-actions">
-              <button type="submit" class="btn btn-primary" id="formSubmit">
-                Send Enquiry
-                <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg>
-              </button>
-              <p class="form-note">We usually reply within one business day.</p>
-            </div>
-            <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
-          </form>
+      <div class="contact-grid">
+        <div class="card contact-tile">
+          <span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg></span>
+          <div class="contact-tile-label">Email</div>
+          <a class="contact-tile-value" href="mailto:contact@yourtravelguide.co">contact@<wbr>yourtravelguide.co</a>
         </div>
+        <div class="card contact-tile">
+          <span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg></span>
+          <div class="contact-tile-label">Phone</div>
+          <a class="contact-tile-value" href="tel:+639189299842">0918 929 9842</a>
+        </div>
+        <div class="card contact-tile">
+          <span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg></span>
+          <div class="contact-tile-label">Office</div>
+          <p class="contact-tile-value">The Shoppes at The Infinity, City of Angeles, Pampanga</p>
+        </div>
+        <div class="card contact-tile">
+          <span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg></span>
+          <div class="contact-tile-label">Hours</div>
+          <p class="contact-tile-value">Chat support &middot; 8:00 AM &ndash; 12:00 MN daily</p>
+          <p class="contact-tile-value">Onsite office &middot; 8:00 AM &ndash; 8:00 PM daily</p>
+        </div>
+      </div>
 
-        <div>
-          <div class="card schedule-card">
-            <svg class="icon" style="width:30px;height:30px;color:#fff;" aria-hidden="true"><use href="#i-calendar"/></svg>
-            <h3 style="margin-top:16px;">Schedule a Call</h3>
-            <p>Prefer to talk it through? Book a short call with a travel specialist and we'll help shape your itinerary.</p>
-            <a href="#" class="btn btn-primary btn-block" aria-label="Schedule a call — booking link to be added">
-              Book a Call
-              <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg>
-            </a>
-            <p style="margin-top:10px;font-size:.82rem;color:rgba(255,255,255,.55);">[Scheduling URL]</p>
-          </div>
-
-          <div class="card info-card" style="margin-top:22px;">
-            <div class="info-row">
-              <span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg></span>
-              <div><div class="info-label">Email</div><div class="info-value"><a href="mailto:contact@yourtravelguide.co">contact@yourtravelguide.co</a></div></div>
-            </div>
-            <div class="info-row">
-              <span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg></span>
-              <div><div class="info-label">Phone</div><div class="info-value"><a href="tel:+639189299842">0918 929 9842</a></div></div>
-            </div>
-            <div class="info-row">
-              <span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg></span>
-              <div><div class="info-label">Office</div><div class="info-value">The Shoppes at The Infinity, City of Angeles, Pampanga</div></div>
-            </div>
-            <div class="info-row">
-              <span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg></span>
-              <div>
-                <div class="info-label">Hours</div>
-                <div class="info-value">Chat support &middot; 8:00 AM &ndash; 12:00 MN daily</div>
-                <div class="info-value">Onsite office &middot; 8:00 AM &ndash; 8:00 PM daily</div>
-              </div>
-            </div>
-          </div>
+      <div class="card schedule-panel">
+        <div class="schedule-panel-copy">
+          <span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg></span>
+          <h3>Schedule a Call</h3>
+          <p>Prefer to talk it through? Book a short call with a travel specialist and we&rsquo;ll help shape your itinerary.</p>
+        </div>
+        <div class="schedule-panel-action">
+          <a href="#" class="btn btn-primary" aria-label="Schedule a call &mdash; booking link to be added">
+            Book a Call
+            <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg>
+          </a>
+          <p class="schedule-panel-note">[Scheduling URL]</p>
         </div>
       </div>
     </div>
@@ -1195,93 +1130,6 @@
     else img.addEventListener('load', reveal);
   });
 
-  /* ---------------------------------------------------------------
-     Enquiry form → contact@yourtravelguide.co
-
-     SETUP (one step, ~2 minutes):
-       1. Go to https://web3forms.com and enter contact@yourtravelguide.co
-       2. They email you an access key
-       3. Replace the placeholder below with that key, commit, and redeploy
-
-     Until a real key is in place the form falls back to opening the
-     visitor's email app, so it is never broken — just less seamless.
-  --------------------------------------------------------------- */
-  var WEB3FORMS_KEY = 'PASTE_YOUR_WEB3FORMS_ACCESS_KEY_HERE';
-  var CONTACT_EMAIL = 'contact@yourtravelguide.co';
-
-  var form = document.getElementById('enquiryForm');
-  if(form){
-    var status = document.getElementById('formStatus');
-    var submitBtn = document.getElementById('formSubmit');
-
-    var val = function(id){ var el = document.getElementById(id); return el ? (el.value || '').trim() : ''; };
-    var say = function(text){ if(status) status.textContent = text; };
-
-    var fields = function(){
-      return [
-        ['Name', val('f-name')],
-        ['Email', val('f-email')],
-        ['Phone', val('f-phone')],
-        ['Service needed', val('f-service')],
-        ['Destination', val('f-destination')],
-        ['Travel dates', val('f-dates')],
-        ['Number of travelers', val('f-travellers')]
-      ].filter(function(r){ return r[1]; });
-    };
-
-    var subjectLine = function(){
-      return 'Trip enquiry' + (val('f-destination') ? ' — ' + val('f-destination') : '');
-    };
-
-    var mailtoFallback = function(){
-      var body = fields().map(function(r){ return r[0] + ': ' + r[1]; }).join('\n');
-      if(val('f-message')) body += '\n\nMessage:\n' + val('f-message');
-      window.location.href = 'mailto:' + CONTACT_EMAIL
-        + '?subject=' + encodeURIComponent(subjectLine())
-        + '&body=' + encodeURIComponent(body);
-      say('Opening your email app with these details. If nothing happens, email us at ' + CONTACT_EMAIL + '.');
-    };
-
-    form.addEventListener('submit', function(e){
-      e.preventDefault();
-      if(!form.checkValidity()){ form.reportValidity(); return; }
-
-      // No key configured yet — degrade gracefully rather than fail silently.
-      if(!WEB3FORMS_KEY || WEB3FORMS_KEY.indexOf('PASTE_YOUR') === 0){
-        mailtoFallback();
-        return;
-      }
-
-      var payload = { access_key: WEB3FORMS_KEY, subject: subjectLine(), from_name: 'Your Travel Guide website' };
-      fields().forEach(function(r){ payload[r[0]] = r[1]; });
-      if(val('f-message')) payload.Message = val('f-message');
-      if(val('f-email')) payload.replyto = val('f-email');
-      var bot = form.querySelector('[name="botcheck"]');
-      if(bot && bot.checked) return; // bot filled the honeypot
-
-      submitBtn.disabled = true;
-      say('Sending…');
-
-      fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(payload)
-      })
-      .then(function(res){ return res.json().then(function(data){ return { ok: res.ok, data: data }; }); })
-      .then(function(r){
-        if(r.ok && r.data && r.data.success){
-          form.reset();
-          say('Thank you — your enquiry is on its way. A travel consultant will get back to you shortly.');
-        } else {
-          say('Sorry, that did not go through. Please email us directly at ' + CONTACT_EMAIL + '.');
-        }
-      })
-      .catch(function(){
-        say('Sorry, that did not go through. Please email us directly at ' + CONTACT_EMAIL + '.');
-      })
-      .then(function(){ submitBtn.disabled = false; });
-    });
-  }
 })();
 </script>
 
