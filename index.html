@@ -493,7 +493,7 @@
             Plan My Trip
             <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg>
           </a>
-          <a href="#contact" class="btn btn-ghost">Chat With a Travel Expert</a>
+          <a href="#contact" class="btn btn-ghost" data-open-chat>Chat With a Travel Expert</a>
         </div>
         <div class="hero-chips">
           <span class="chip"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Personalized Travel</span>
@@ -775,7 +775,7 @@
           Plan My Trip
           <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg>
         </a>
-        <a href="#contact" class="btn btn-ghost">Chat With a Travel Expert</a>
+        <a href="#contact" class="btn btn-ghost" data-open-chat>Chat With a Travel Expert</a>
       </div>
 
       <div class="contact-wrap">
@@ -1027,6 +1027,64 @@
     }
   }, {passive:true});
   updateRoute();
+
+  /* "Chat With a Travel Expert" → open the SleekFlow widget.
+
+     SleekFlow does not document a public method for opening the widget, and
+     the exact global it exposes could not be inspected from the build
+     environment. So this probes for the usual shapes, then falls back to
+     clicking the widget's own launcher button, and if neither is there the
+     link does what it always did: scroll to the contact form. A visitor
+     never ends up on a dead button.
+
+     To pin this down exactly: open the live site, run
+       Object.keys(window).filter(k => /sleek|chat|widget/i.test(k))
+     in the console, and tell me what it prints. */
+  var chatButtons = document.querySelectorAll('[data-open-chat]');
+  if(chatButtons.length){
+    var OPEN_METHODS = ['open', 'show', 'openWidget', 'showWidget', 'openChat', 'toggle', 'maximize'];
+
+    var tryApi = function(){
+      var globals = [];
+      for(var key in window){
+        if(/^(sleek ?flow|sf ?widget|sfChat)/i.test(key)) globals.push(key);
+      }
+      globals.push('SleekFlow', 'sleekflow', 'SleekflowWidget', 'sleekflowWidget');
+      for(var i = 0; i < globals.length; i++){
+        var obj;
+        try { obj = window[globals[i]]; } catch(e){ continue; }
+        if(!obj) continue;
+        for(var j = 0; j < OPEN_METHODS.length; j++){
+          var fn = obj[OPEN_METHODS[j]];
+          if(typeof fn === 'function'){
+            try { fn.call(obj); return true; } catch(e){ /* keep looking */ }
+          }
+        }
+      }
+      return false;
+    };
+
+    var tryLauncher = function(){
+      // The launcher is whatever fixed-position control the widget injected.
+      var candidates = document.querySelectorAll(
+        '[id*="sleekflow" i] button, [class*="sleekflow" i] button, ' +
+        '[id*="sleekflow" i][role="button"], [class*="sleekflow" i][role="button"], ' +
+        'button[id*="sleekflow" i], button[class*="sleekflow" i]'
+      );
+      for(var i = 0; i < candidates.length; i++){
+        var el = candidates[i];
+        if(el.offsetParent !== null){ el.click(); return true; }
+      }
+      return false;
+    };
+
+    Array.prototype.forEach.call(chatButtons, function(btn){
+      btn.addEventListener('click', function(e){
+        if(tryApi() || tryLauncher()) e.preventDefault();
+        // otherwise: let the href="#contact" jump happen as before
+      });
+    });
+  }
 
   /* Milestone counters.
      The final value is written in the HTML, so the correct number shows
