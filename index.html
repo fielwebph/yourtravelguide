@@ -975,174 +975,92 @@
      To pin this down exactly: open the live site, run
        Object.keys(window).filter(k => /sleek|chat|widget/i.test(k))
      in the console, and tell me what it prints. */
+  /* Chat buttons → SleekFlow.
+     Confirmed from the live page: window.SleekFlowWidget exposes open() and
+     hide(). No more guessing — call open() directly. Its script is async, so
+     if a visitor clicks before it has booted, poll briefly rather than fail. */
   var chatButtons = document.querySelectorAll('[data-open-chat]');
   if(chatButtons.length){
-    // Confirmed live: the widget exposes window.SleekFlowWidget. Its opening
-    // method is not documented, so try the conventional names on it.
-    var OPEN_METHODS = [
-      'open', 'show', 'openWidget', 'showWidget', 'openChat', 'showChat',
-      'toggle', 'maximize', 'expand', 'launch', 'openChatWindow'
-    ];
-
-    var tryApi = function(){
-      var globals = [];
-      for(var key in window){
-        if(/^(sleek ?flow|sf ?widget|sfChat)/i.test(key)) globals.push(key);
-      }
-      globals.push('SleekFlow', 'sleekflow', 'SleekflowWidget', 'sleekflowWidget');
-      for(var i = 0; i < globals.length; i++){
-        var obj;
-        try { obj = window[globals[i]]; } catch(e){ continue; }
-        if(!obj) continue;
-        for(var j = 0; j < OPEN_METHODS.length; j++){
-          var fn = obj[OPEN_METHODS[j]];
-          if(typeof fn === 'function'){
-            try { fn.call(obj); return true; } catch(e){ /* keep looking */ }
-          }
-        }
+    var openChat = function(){
+      var w = window.SleekFlowWidget;
+      if(w && typeof w.open === 'function'){
+        try { w.open(); return true; } catch(err){ return false; }
       }
       return false;
     };
 
-    // Drive a target the way a real pointer would. A plain .click() misses
-    // launchers that listen for pointerdown or mousedown, which many do — so
-    // send the whole sequence. One click event, so a toggle cannot fire twice.
-    var poke = function(el, x, y){
-      if(!el) return false;
-      var r = el.getBoundingClientRect ? el.getBoundingClientRect() : null;
-      var opts = {
-        bubbles: true, cancelable: true, composed: true,
-        clientX: typeof x === 'number' ? x : (r ? r.left + r.width / 2 : 0),
-        clientY: typeof y === 'number' ? y : (r ? r.top + r.height / 2 : 0)
-      };
-      try {
-        if(window.PointerEvent) el.dispatchEvent(new PointerEvent('pointerdown', opts));
-        el.dispatchEvent(new MouseEvent('mousedown', opts));
-        if(window.PointerEvent) el.dispatchEvent(new PointerEvent('pointerup', opts));
-        el.dispatchEvent(new MouseEvent('mouseup', opts));
-        el.dispatchEvent(new MouseEvent('click', opts));
-        return true;
-      } catch(err){ return false; }
+    var fallbackToContact = function(){
+      var c = document.getElementById('contact');
+      if(c) c.scrollIntoView({behavior:'smooth', block:'start'});
     };
 
-    var clickInside = function(root){
-      // Prefer a real control inside the container over the container itself.
-      var inner = root.querySelector && root.querySelector('button, [role="button"], a');
-      return poke(inner || root);
-    };
-
-    var tryLauncher = function(){
-      // Named match first: whatever the widget called itself.
-      var named = document.querySelectorAll('[id*="sleek" i], [class*="sleek" i], [id^="sf-" i], [class^="sf-" i]');
-      for(var i = 0; i < named.length; i++){
-        var n = named[i];
-        if(n.offsetParent === null) continue;
-        if(n.shadowRoot && clickInside(n.shadowRoot)) return true;
-        if(clickInside(n)) return true;
-      }
-
-      // Otherwise: the injected launcher is a small fixed control pinned near a
-      // bottom corner. Only consider nodes outside our own markup so this can
-      // never fire one of the page's own buttons.
-      var ours = ['#siteHeader', '#main', 'footer', '.route'];
-      var isOurs = function(el){
-        for(var k = 0; k < ours.length; k++){
-          var owner = document.querySelector(ours[k]);
-          if(owner && owner.contains(el)) return true;
-        }
-        return false;
-      };
-
-      var all = document.body.children;
-      for(var j = 0; j < all.length; j++){
-        var el = all[j];
-        if(isOurs(el) || el.tagName === 'SCRIPT' || el.tagName === 'IFRAME') continue;
-        var cs = window.getComputedStyle(el);
-        if(cs.position !== 'fixed' || cs.display === 'none' || cs.visibility === 'hidden') continue;
-        var r = el.getBoundingClientRect();
-        var nearBottom = r.bottom > window.innerHeight - 280;
-        var bubbleSized = r.width > 24 && r.width < 280;
-        if(!nearBottom || !bubbleSized) continue;
-        if(el.shadowRoot && clickInside(el.shadowRoot)) return true;
-        if(clickInside(el)) return true;
-      }
-      return false;
-    };
-
-    // Last resort: whatever sits at the corner where launchers live, driven with
-    // a full pointer sequence. Catches launchers that listen for pointerdown or
-    // mousedown rather than click, and ones the DOM walk above never matched.
-    var tryCornerPoke = function(){
-      var pts = [
-        [window.innerWidth - 42, window.innerHeight - 42],
-        [window.innerWidth - 70, window.innerHeight - 70],
-        [42, window.innerHeight - 42],
-        [70, window.innerHeight - 70]
-      ];
-      var mine = document.querySelector('#main');
-      for(var i = 0; i < pts.length; i++){
-        var el = document.elementFromPoint(pts[i][0], pts[i][1]);
-        if(!el || el === document.body || el === document.documentElement) continue;
-        if(mine && mine.contains(el)) continue;
-        if(el.closest && (el.closest('#siteHeader') || el.closest('footer') || el.closest('.route'))) continue;
-        if(el.tagName === 'IFRAME') continue; // cross-origin: unreachable from here
-        if(poke(el, pts[i][0], pts[i][1])) return true;
-      }
-      return false;
-    };
-
-    /* SleekFlow is expected to bind its own listener to #chat-with-us. That
-       listener runs on click regardless of what we do here, so the guessing
-       tiers must not also fire — poking the launcher after the widget already
-       opened would toggle it straight back shut. Instead: take a snapshot,
-       give SleekFlow a moment, and only fall back if nothing appeared. */
-    var primary = document.getElementById('chat-with-us');
-
-    var snapshot = function(){
-      var fixedCount = 0;
-      for(var i = 0; i < document.body.children.length; i++){
-        var cs = window.getComputedStyle(document.body.children[i]);
-        if(cs.position === 'fixed' && cs.display !== 'none' && cs.visibility !== 'hidden') fixedCount++;
-      }
-      return {
-        iframes: document.querySelectorAll('iframe').length,
-        bodyKids: document.body.childElementCount,
-        fixed: fixedCount
-      };
-    };
-
-    var changed = function(a, b){
-      return b.iframes !== a.iframes || b.bodyKids !== a.bodyKids || b.fixed !== a.fixed;
-    };
-
-    var handle = function(e){
+    var handleChatClick = function(e){
       e.preventDefault();
+      if(openChat()) return;
 
-      // A real API, if one ever appears, is always preferable.
-      if(tryApi()) return;
-
-      var before = snapshot();
-      window.setTimeout(function(){
-        if(changed(before, snapshot())) return;   // SleekFlow's own binding opened it
-        if(tryLauncher() || tryCornerPoke()) return;
-        // Nothing worked — do what the link always did.
-        var contact = document.getElementById('contact');
-        if(contact) contact.scrollIntoView({behavior:'smooth', block:'start'});
-      }, 450);
+      // Widget still loading — retry for a few seconds, then give up gracefully.
+      var waited = 0, step = 250, limit = 3000;
+      var timer = window.setInterval(function(){
+        waited += step;
+        if(openChat()){ window.clearInterval(timer); return; }
+        if(waited >= limit){ window.clearInterval(timer); fallbackToContact(); }
+      }, step);
     };
 
     Array.prototype.forEach.call(chatButtons, function(btn){
-      if(primary && btn !== primary){
-        // Route secondary buttons through the one SleekFlow knows about.
-        btn.addEventListener('click', function(e){
-          e.preventDefault();
-          poke(primary);
-        });
-        return;
-      }
-      btn.addEventListener('click', handle);
+      btn.addEventListener('click', handleChatClick);
     });
   }
+
+  /* Force the widget's "Start Chat" label white.
+     The widget renders into div#sleekflow-widget-container's shadow root, and
+     page CSS does not cross a shadow boundary — but the root is open, so a
+     <style> can be injected into it. The panel is built lazily, so watch for
+     it rather than assuming it exists at load. Prefer SleekFlow's own colour
+     settings if they can express this; this is the fallback. */
+  (function whitenStartChat(){
+    var CSS = '.sleekflow-start-chat, [class*="start"] button, button[class*="start"] {' +
+              ' color:#fff !important; }';
+    var seen = null;
+
+    var applyTo = function(shadow){
+      if(!shadow || shadow.__ytgStyled) return;
+      var style = document.createElement('style');
+      style.textContent = CSS;
+      shadow.appendChild(style);
+      shadow.__ytgStyled = true;
+    };
+
+    // Text-based pass: class names are not ours to rely on, but the label is.
+    var paintByText = function(root){
+      var els = root.querySelectorAll('button, a, [role="button"], span, div');
+      for(var i = 0; i < els.length; i++){
+        var el = els[i], own = '';
+        for(var n = 0; n < el.childNodes.length; n++){
+          if(el.childNodes[n].nodeType === 3) own += el.childNodes[n].nodeValue;
+        }
+        if(/^\s*start chat\s*$/i.test(own)) el.style.setProperty('color', '#fff', 'important');
+      }
+    };
+
+    var tick = function(){
+      var host = document.getElementById('sleekflow-widget-container');
+      if(!host || !host.shadowRoot) return;
+      if(seen !== host.shadowRoot){
+        seen = host.shadowRoot;
+        applyTo(seen);
+        try {
+          new MutationObserver(function(){ paintByText(seen); })
+            .observe(seen, {childList:true, subtree:true});
+        } catch(err){ /* observer unsupported: the interval below still runs */ }
+      }
+      paintByText(seen);
+    };
+
+    var poll = window.setInterval(tick, 700);
+    window.setTimeout(function(){ window.clearInterval(poll); }, 30000);
+    tick();
+  })();
 
   /* Temporary: visit the site with ?chatdebug=1 to see what the SleekFlow
      widget actually exposes, on-screen. Remove once the chat button works. */
