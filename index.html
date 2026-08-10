@@ -497,7 +497,7 @@
             Plan My Trip
             <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg>
           </a>
-          <a href="#contact" class="btn btn-ghost" data-open-chat>Chat With a Travel Expert</a>
+          <a href="#contact" class="btn btn-ghost" id="chat-with-us" data-open-chat>Chat With a Travel Expert</a>
         </div>
         <div class="hero-chips">
           <span class="chip"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Personalized Travel</span>
@@ -1091,11 +1091,56 @@
       return false;
     };
 
+    /* SleekFlow is expected to bind its own listener to #chat-with-us. That
+       listener runs on click regardless of what we do here, so the guessing
+       tiers must not also fire — poking the launcher after the widget already
+       opened would toggle it straight back shut. Instead: take a snapshot,
+       give SleekFlow a moment, and only fall back if nothing appeared. */
+    var primary = document.getElementById('chat-with-us');
+
+    var snapshot = function(){
+      var fixedCount = 0;
+      for(var i = 0; i < document.body.children.length; i++){
+        var cs = window.getComputedStyle(document.body.children[i]);
+        if(cs.position === 'fixed' && cs.display !== 'none' && cs.visibility !== 'hidden') fixedCount++;
+      }
+      return {
+        iframes: document.querySelectorAll('iframe').length,
+        bodyKids: document.body.childElementCount,
+        fixed: fixedCount
+      };
+    };
+
+    var changed = function(a, b){
+      return b.iframes !== a.iframes || b.bodyKids !== a.bodyKids || b.fixed !== a.fixed;
+    };
+
+    var handle = function(e){
+      e.preventDefault();
+
+      // A real API, if one ever appears, is always preferable.
+      if(tryApi()) return;
+
+      var before = snapshot();
+      window.setTimeout(function(){
+        if(changed(before, snapshot())) return;   // SleekFlow's own binding opened it
+        if(tryLauncher() || tryCornerPoke()) return;
+        // Nothing worked — do what the link always did.
+        var contact = document.getElementById('contact');
+        if(contact) contact.scrollIntoView({behavior:'smooth', block:'start'});
+      }, 450);
+    };
+
     Array.prototype.forEach.call(chatButtons, function(btn){
-      btn.addEventListener('click', function(e){
-        if(tryApi() || tryLauncher() || tryCornerPoke()) e.preventDefault();
-        // otherwise: let the href="#contact" jump happen as before
-      });
+      if(primary && btn !== primary){
+        // Route secondary buttons through the one SleekFlow knows about.
+        btn.addEventListener('click', function(e){
+          e.preventDefault();
+          poke(primary);
+        });
+        return;
+      }
+      btn.addEventListener('click', handle);
     });
   }
 
