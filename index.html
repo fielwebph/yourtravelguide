@@ -1004,12 +1004,31 @@
       return false;
     };
 
+    // Drive a target the way a real pointer would. A plain .click() misses
+    // launchers that listen for pointerdown or mousedown, which many do — so
+    // send the whole sequence. One click event, so a toggle cannot fire twice.
+    var poke = function(el, x, y){
+      if(!el) return false;
+      var r = el.getBoundingClientRect ? el.getBoundingClientRect() : null;
+      var opts = {
+        bubbles: true, cancelable: true, composed: true,
+        clientX: typeof x === 'number' ? x : (r ? r.left + r.width / 2 : 0),
+        clientY: typeof y === 'number' ? y : (r ? r.top + r.height / 2 : 0)
+      };
+      try {
+        if(window.PointerEvent) el.dispatchEvent(new PointerEvent('pointerdown', opts));
+        el.dispatchEvent(new MouseEvent('mousedown', opts));
+        if(window.PointerEvent) el.dispatchEvent(new PointerEvent('pointerup', opts));
+        el.dispatchEvent(new MouseEvent('mouseup', opts));
+        el.dispatchEvent(new MouseEvent('click', opts));
+        return true;
+      } catch(err){ return false; }
+    };
+
     var clickInside = function(root){
       // Prefer a real control inside the container over the container itself.
       var inner = root.querySelector && root.querySelector('button, [role="button"], a');
-      var target = inner || root;
-      if(typeof target.click === 'function'){ target.click(); return true; }
-      return false;
+      return poke(inner || root);
     };
 
     var tryLauncher = function(){
@@ -1050,12 +1069,74 @@
       return false;
     };
 
+    // Last resort: whatever sits at the corner where launchers live, driven with
+    // a full pointer sequence. Catches launchers that listen for pointerdown or
+    // mousedown rather than click, and ones the DOM walk above never matched.
+    var tryCornerPoke = function(){
+      var pts = [
+        [window.innerWidth - 42, window.innerHeight - 42],
+        [window.innerWidth - 70, window.innerHeight - 70],
+        [42, window.innerHeight - 42],
+        [70, window.innerHeight - 70]
+      ];
+      var mine = document.querySelector('#main');
+      for(var i = 0; i < pts.length; i++){
+        var el = document.elementFromPoint(pts[i][0], pts[i][1]);
+        if(!el || el === document.body || el === document.documentElement) continue;
+        if(mine && mine.contains(el)) continue;
+        if(el.closest && (el.closest('#siteHeader') || el.closest('footer') || el.closest('.route'))) continue;
+        if(el.tagName === 'IFRAME') continue; // cross-origin: unreachable from here
+        if(poke(el, pts[i][0], pts[i][1])) return true;
+      }
+      return false;
+    };
+
     Array.prototype.forEach.call(chatButtons, function(btn){
       btn.addEventListener('click', function(e){
-        if(tryApi() || tryLauncher()) e.preventDefault();
+        if(tryApi() || tryLauncher() || tryCornerPoke()) e.preventDefault();
         // otherwise: let the href="#contact" jump happen as before
       });
     });
+  }
+
+  /* Temporary: visit the site with ?chatdebug=1 to see what the SleekFlow
+     widget actually exposes, on-screen. Remove once the chat button works. */
+  if(/[?&]chatdebug=1/.test(window.location.search)){
+    window.setTimeout(function(){
+      var names = function(o){ try { return Object.getOwnPropertyNames(o); } catch(e){ return 'n/a'; } };
+      var label = function(el){
+        return el.tagName.toLowerCase()
+          + (el.id ? '#' + el.id : '')
+          + (typeof el.className === 'string' && el.className.trim()
+              ? '.' + el.className.trim().split(/\s+/).slice(0,3).join('.') : '');
+      };
+      var w = window.SleekFlowWidget;
+      var corner = [];
+      [[innerWidth-42, innerHeight-42], [innerWidth-70, innerHeight-70], [42, innerHeight-42]].forEach(function(pt){
+        var el = document.elementFromPoint(pt[0], pt[1]);
+        corner.push(el ? label(el) + (el.shadowRoot ? ' [shadowRoot]' : '') : 'null');
+      });
+      var report = {
+        widgetType: typeof w,
+        widgetOwn: w ? names(w) : null,
+        widgetProto: w ? names(Object.getPrototypeOf(w) || {}) : null,
+        matchingGlobals: Object.keys(window).filter(function(k){ return /sleek|chat|widget/i.test(k); }),
+        iframes: [].map.call(document.querySelectorAll('iframe'), function(f){
+          return { id: f.id, src: String(f.src || '').slice(0, 60) };
+        }),
+        atBottomCorners: corner,
+        bodyTopLevel: [].map.call(document.body.children, function(el){
+          var cs = getComputedStyle(el);
+          return cs.position === 'fixed' ? label(el) + ' (fixed)' : null;
+        }).filter(Boolean)
+      };
+      var box = document.createElement('pre');
+      box.textContent = JSON.stringify(report, null, 2);
+      box.style.cssText = 'position:fixed;left:8px;right:8px;top:8px;z-index:2147483647;max-height:70vh;'
+        + 'overflow:auto;background:#111;color:#0f0;font:12px/1.45 ui-monospace,Menlo,monospace;'
+        + 'padding:14px;border-radius:10px;white-space:pre-wrap;user-select:all;';
+      document.body.appendChild(box);
+    }, 3000); // let the widget finish booting
   }
 
   /* Milestone counters.
