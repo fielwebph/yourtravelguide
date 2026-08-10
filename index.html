@@ -1069,16 +1069,48 @@
       return false;
     };
 
+    var clickInside = function(root){
+      // Prefer a real control inside the container over the container itself.
+      var inner = root.querySelector && root.querySelector('button, [role="button"], a');
+      var target = inner || root;
+      if(typeof target.click === 'function'){ target.click(); return true; }
+      return false;
+    };
+
     var tryLauncher = function(){
-      // The launcher is whatever fixed-position control the widget injected.
-      var candidates = document.querySelectorAll(
-        '[id*="sleekflow" i] button, [class*="sleekflow" i] button, ' +
-        '[id*="sleekflow" i][role="button"], [class*="sleekflow" i][role="button"], ' +
-        'button[id*="sleekflow" i], button[class*="sleekflow" i]'
-      );
-      for(var i = 0; i < candidates.length; i++){
-        var el = candidates[i];
-        if(el.offsetParent !== null){ el.click(); return true; }
+      // Named match first: whatever the widget called itself.
+      var named = document.querySelectorAll('[id*="sleek" i], [class*="sleek" i], [id^="sf-" i], [class^="sf-" i]');
+      for(var i = 0; i < named.length; i++){
+        var n = named[i];
+        if(n.offsetParent === null) continue;
+        if(n.shadowRoot && clickInside(n.shadowRoot)) return true;
+        if(clickInside(n)) return true;
+      }
+
+      // Otherwise: the injected launcher is a small fixed control pinned near a
+      // bottom corner. Only consider nodes outside our own markup so this can
+      // never fire one of the page's own buttons.
+      var ours = ['#siteHeader', '#main', 'footer', '.route'];
+      var isOurs = function(el){
+        for(var k = 0; k < ours.length; k++){
+          var owner = document.querySelector(ours[k]);
+          if(owner && owner.contains(el)) return true;
+        }
+        return false;
+      };
+
+      var all = document.body.children;
+      for(var j = 0; j < all.length; j++){
+        var el = all[j];
+        if(isOurs(el) || el.tagName === 'SCRIPT' || el.tagName === 'IFRAME') continue;
+        var cs = window.getComputedStyle(el);
+        if(cs.position !== 'fixed' || cs.display === 'none' || cs.visibility === 'hidden') continue;
+        var r = el.getBoundingClientRect();
+        var nearBottom = r.bottom > window.innerHeight - 280;
+        var bubbleSized = r.width > 24 && r.width < 280;
+        if(!nearBottom || !bubbleSized) continue;
+        if(el.shadowRoot && clickInside(el.shadowRoot)) return true;
+        if(clickInside(el)) return true;
       }
       return false;
     };
