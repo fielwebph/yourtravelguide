@@ -1017,12 +1017,17 @@
      <style> can be injected into it. The panel is built lazily, so watch for
      it rather than assuming it exists at load. Prefer SleekFlow's own colour
      settings if they can express this; this is the fallback. */
-  (function whitenStartChat(){
+  /* Restyle bits of the SleekFlow widget.
+     Its UI lives in div#sleekflow-widget-container's shadow root. Page CSS
+     cannot cross a shadow boundary, but the root is open so JS can reach in.
+     Prefer SleekFlow's own colour settings where they can express the same
+     thing — this is a fallback and depends on their internals. */
+  (function styleSleekFlowWidget(){
     var CSS = '.sleekflow-start-chat, [class*="start"] button, button[class*="start"] {' +
               ' color:#fff !important; }';
     var seen = null;
 
-    var applyTo = function(shadow){
+    var injectStyle = function(shadow){
       if(!shadow || shadow.__ytgStyled) return;
       var style = document.createElement('style');
       style.textContent = CSS;
@@ -1030,15 +1035,55 @@
       shadow.__ytgStyled = true;
     };
 
-    // Text-based pass: class names are not ours to rely on, but the label is.
-    var paintByText = function(root){
+    // Class names are not ours to rely on; the visible label is stable.
+    var paintStartChat = function(root){
       var els = root.querySelectorAll('button, a, [role="button"], span, div');
       for(var i = 0; i < els.length; i++){
         var el = els[i], own = '';
         for(var n = 0; n < el.childNodes.length; n++){
           if(el.childNodes[n].nodeType === 3) own += el.childNodes[n].nodeValue;
         }
-        if(/^\s*start chat\s*$/i.test(own)) el.style.setProperty('color', '#fff', 'important');
+        if(/^s*start chats*$/i.test(own)) el.style.setProperty('color', '#fff', 'important');
+      }
+    };
+
+    // Whiten the launcher bubble's icon only. Scoped by size and position so
+    // the open panel's own icons — which sit on white — are left alone.
+    var paintLauncherIcon = function(root){
+      var all = root.querySelectorAll('*');
+      for(var i = 0; i < all.length; i++){
+        var el = all[i];
+        if(!el.getBoundingClientRect) continue;
+        var r = el.getBoundingClientRect();
+        var bubbleSized = r.width >= 36 && r.width <= 96 && r.height >= 36 && r.height <= 96;
+        var nearCorner = r.bottom > window.innerHeight - 220;
+        if(!bubbleSized || !nearCorner) continue;
+
+        // currentColor-based icons follow this.
+        el.style.setProperty('color', '#fff', 'important');
+
+        var svgs = el.querySelectorAll('svg');
+        for(var s = 0; s < svgs.length; s++){
+          svgs[s].style.setProperty('color', '#fff', 'important');
+          var shapes = svgs[s].querySelectorAll('path, circle, rect, polygon, ellipse, line, polyline');
+          for(var k = 0; k < shapes.length; k++){
+            var cs = window.getComputedStyle(shapes[k]);
+            // Only repaint what is actually painted — recolouring fill:none
+            // would fill in a stroke-drawn icon and turn it into a blob.
+            if(cs.fill && cs.fill !== 'none' && cs.fill !== 'rgba(0, 0, 0, 0)'){
+              shapes[k].style.setProperty('fill', '#fff', 'important');
+            }
+            if(cs.stroke && cs.stroke !== 'none' && cs.stroke !== 'rgba(0, 0, 0, 0)'){
+              shapes[k].style.setProperty('stroke', '#fff', 'important');
+            }
+          }
+        }
+
+        // Bitmap icons cannot be recoloured, only inverted to white.
+        var imgs = el.querySelectorAll('img');
+        for(var m = 0; m < imgs.length; m++){
+          imgs[m].style.setProperty('filter', 'brightness(0) invert(1)', 'important');
+        }
       }
     };
 
@@ -1047,13 +1092,16 @@
       if(!host || !host.shadowRoot) return;
       if(seen !== host.shadowRoot){
         seen = host.shadowRoot;
-        applyTo(seen);
+        injectStyle(seen);
         try {
-          new MutationObserver(function(){ paintByText(seen); })
-            .observe(seen, {childList:true, subtree:true});
-        } catch(err){ /* observer unsupported: the interval below still runs */ }
+          new MutationObserver(function(){
+            paintStartChat(seen);
+            paintLauncherIcon(seen);
+          }).observe(seen, {childList:true, subtree:true});
+        } catch(err){ /* observer unsupported: the poll below still runs */ }
       }
-      paintByText(seen);
+      paintStartChat(seen);
+      paintLauncherIcon(seen);
     };
 
     var poll = window.setInterval(tick, 700);
