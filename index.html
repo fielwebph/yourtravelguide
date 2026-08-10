@@ -208,6 +208,8 @@
   .hero h1 em{font-style:normal;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;}
   .hero-sub{margin-top:22px;font-size:1.14rem;color:var(--ink-soft);max-width:52ch;}
   .hero-ctas{display:flex;flex-wrap:wrap;gap:14px;margin-top:32px;}
+  /* Plain label beside the CTA — deliberately not a control. */
+  .cta-text{align-self:center;font-weight:600;font-size:.98rem;color:var(--ink-soft);}
   .hero-chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:36px;}
   .chip{
     display:inline-flex;align-items:center;gap:8px;padding:9px 16px 9px 12px;border-radius:999px;
@@ -497,7 +499,7 @@
             Plan My Trip
             <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg>
           </a>
-          <a href="#contact" class="btn btn-ghost" id="chat-with-us" data-open-chat>Chat With a Travel Expert</a>
+          <span class="cta-text">Chat With a Travel Expert</span>
         </div>
         <div class="hero-chips">
           <span class="chip"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Personalized Travel</span>
@@ -779,7 +781,7 @@
           Plan My Trip
           <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg>
         </a>
-        <a href="#contact" class="btn btn-ghost" data-open-chat>Chat With a Travel Expert</a>
+        <span class="cta-text">Chat With a Travel Expert</span>
       </div>
 
       <div class="contact-grid">
@@ -962,54 +964,6 @@
   }, {passive:true});
   updateRoute();
 
-  /* "Chat With a Travel Expert" → open the SleekFlow widget.
-
-     SleekFlow does not document a public method for opening the widget, and
-     the exact global it exposes could not be inspected from the build
-     environment. So this probes for the usual shapes, then falls back to
-     clicking the widget's own launcher button, and if neither is there the
-     link does what it always did: scroll to the contact form. A visitor
-     never ends up on a dead button.
-
-     To pin this down exactly: open the live site, run
-       Object.keys(window).filter(k => /sleek|chat|widget/i.test(k))
-     in the console, and tell me what it prints. */
-  /* Chat buttons → SleekFlow.
-     Confirmed from the live page: window.SleekFlowWidget exposes open() and
-     hide(). No more guessing — call open() directly. Its script is async, so
-     if a visitor clicks before it has booted, poll briefly rather than fail. */
-  var chatButtons = document.querySelectorAll('[data-open-chat]');
-  if(chatButtons.length){
-    var openChat = function(){
-      var w = window.SleekFlowWidget;
-      if(w && typeof w.open === 'function'){
-        try { w.open(); return true; } catch(err){ return false; }
-      }
-      return false;
-    };
-
-    var fallbackToContact = function(){
-      var c = document.getElementById('contact');
-      if(c) c.scrollIntoView({behavior:'smooth', block:'start'});
-    };
-
-    var handleChatClick = function(e){
-      e.preventDefault();
-      if(openChat()) return;
-
-      // Widget still loading — retry for a few seconds, then give up gracefully.
-      var waited = 0, step = 250, limit = 3000;
-      var timer = window.setInterval(function(){
-        waited += step;
-        if(openChat()){ window.clearInterval(timer); return; }
-        if(waited >= limit){ window.clearInterval(timer); fallbackToContact(); }
-      }, step);
-    };
-
-    Array.prototype.forEach.call(chatButtons, function(btn){
-      btn.addEventListener('click', handleChatClick);
-    });
-  }
 
   /* Force the widget's "Start Chat" label white.
      The widget renders into div#sleekflow-widget-container's shadow root, and
