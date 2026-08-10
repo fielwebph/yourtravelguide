@@ -1130,12 +1130,54 @@
           ? 'yes — CSS/JS can target these'
           : 'not found in this document (likely inside a cross-origin iframe)'
       };
+      // What open() and hide() actually are — arity and source reveal whether
+      // they take arguments, and whether calling one bare can work at all.
+      var fnInfo = function(f){
+        if(typeof f !== 'function') return typeof f;
+        var src;
+        try { src = Function.prototype.toString.call(f).slice(0, 400); }
+        catch(err){ src = '(source unavailable)'; }
+        return { arity: f.length, source: src };
+      };
+      report.openFn = w ? fnInfo(w.open) : null;
+      report.hideFn = w ? fnInfo(w.hide) : null;
+
+      var wrap = document.createElement('div');
+      wrap.style.cssText = 'position:fixed;left:8px;right:8px;top:8px;z-index:2147483647;max-height:80vh;'
+        + 'overflow:auto;background:#111;color:#0f0;font:12px/1.45 ui-monospace,Menlo,monospace;'
+        + 'padding:14px;border-radius:10px;';
+
       var box = document.createElement('pre');
       box.textContent = JSON.stringify(report, null, 2);
-      box.style.cssText = 'position:fixed;left:8px;right:8px;top:8px;z-index:2147483647;max-height:70vh;'
-        + 'overflow:auto;background:#111;color:#0f0;font:12px/1.45 ui-monospace,Menlo,monospace;'
-        + 'padding:14px;border-radius:10px;white-space:pre-wrap;user-select:all;';
-      document.body.appendChild(box);
+      box.style.cssText = 'white-space:pre-wrap;user-select:all;margin:0;';
+
+      var result = document.createElement('div');
+      result.id = 'chatdebug-result';
+      result.style.cssText = 'margin-top:12px;color:#ff0;white-space:pre-wrap;user-select:all;';
+
+      // Call open() by hand, right here, and show exactly what happens.
+      var mk = function(text, run){
+        var btn = document.createElement('button');
+        btn.textContent = text;
+        btn.style.cssText = 'margin:12px 8px 0 0;padding:9px 14px;font:600 12px sans-serif;'
+          + 'background:#0f0;color:#000;border:0;border-radius:6px;cursor:pointer;';
+        btn.addEventListener('click', function(){
+          try {
+            var out = run();
+            result.textContent = text + ' → returned: ' + String(out);
+          } catch(err){
+            result.textContent = text + ' → THREW: ' + (err && err.message ? err.message : String(err));
+          }
+        });
+        return btn;
+      };
+
+      wrap.appendChild(box);
+      wrap.appendChild(mk('run open()', function(){ return window.SleekFlowWidget.open(); }));
+      wrap.appendChild(mk('run open(true)', function(){ return window.SleekFlowWidget.open(true); }));
+      wrap.appendChild(mk('run hide()', function(){ return window.SleekFlowWidget.hide(); }));
+      wrap.appendChild(result);
+      document.body.appendChild(wrap);
     }, 3000); // let the widget finish booting
   }
 
