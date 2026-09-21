@@ -535,19 +535,38 @@
     background:rgba(255,133,61,.12);color:var(--ink);font-size:.93rem;font-weight:600;
   }
 
-  .vehicle-grid{display:grid;grid-template-columns:1fr;gap:20px;margin-top:24px;}
-  @media (min-width:640px){ .vehicle-grid{grid-template-columns:repeat(2,1fr);} }
-  @media (min-width:1100px){ .vehicle-grid{grid-template-columns:repeat(3,1fr);} }
-  .vehicle-card{overflow:hidden;display:flex;flex-direction:column;}
-  .vehicle-card .dest-media{aspect-ratio:16/10;}
-  .vehicle-body{padding:22px 24px 26px;flex:1;}
+  /* Vehicle Types: one row per seat class, with a card for every model
+     Paula supplied for it. Rows rather than a tile grid, because a seat class
+     can list four models and square cards need the full width to stay legible. */
+  .vehicle-list{margin-top:10px;}
+  .vehicle-row{
+    display:grid;grid-template-columns:1fr;gap:22px;
+    padding:30px 0;border-top:1px solid var(--line);
+  }
+  .vehicle-row:first-child{border-top:0;padding-top:16px;}
+  @media (min-width:860px){
+    .vehicle-row{grid-template-columns:290px minmax(0,1fr);gap:40px;align-items:start;}
+  }
   .vehicle-seats{
     display:inline-block;font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
     color:var(--orange);background:rgba(255,133,61,.14);padding:4px 10px;border-radius:999px;margin-bottom:12px;
   }
-  .vehicle-card h4{font-size:1.02rem;color:var(--dark);line-height:1.35;}
-  .vehicle-card .bullets{margin-top:14px;}
-  .vehicle-card .bullets li{font-size:.93rem;}
+  .vehicle-row-copy h4{font-size:1.02rem;color:var(--dark);line-height:1.4;}
+  .vehicle-row-copy .bullets{margin-top:14px;}
+  .vehicle-row-copy .bullets li{font-size:.94rem;}
+
+  /* Flex, not auto-fit grid: a slot with one model card should show it at the
+     same size as a slot with three, not stretched across the whole row. */
+  .vehicle-row-media{display:flex;flex-wrap:wrap;gap:16px;}
+  .vehicle-row-media > .dest-media{flex:1 1 160px;max-width:250px;}
+  /* The supplied cards are square, so a square slot fits them with no cropping. */
+  .vehicle-shot{
+    aspect-ratio:1/1;border:1px solid var(--line);border-radius:var(--radius-md);
+    background:var(--surface-2);
+  }
+  .vehicle-shot:not(.has-photo){border:1px dashed var(--line-strong);}
+  .vehicle-shot .icon{width:26px;height:26px;}
+  .vehicle-shot .dest-media-empty span{font-size:.78rem;}
 
   .gallery-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:24px;}
   @media (min-width:900px){ .gallery-grid{grid-template-columns:repeat(4,1fr);} }
@@ -1017,37 +1036,47 @@
           <h3>Vehicle Types</h3>
         </div>
         <p>We recommend choosing the vehicle that best fits your group size and travel needs. Vehicle models may be replaced with an equivalent model depending on availability.</p>
-        <div class="vehicle-grid">
-          <article class="card vehicle-card">
-            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/7-seater.jpg" alt="7-Seater vehicle used for private transfers and tours in Japan" loading="lazy" decoding="async"></div>
-            <div class="vehicle-body">
+        <div class="vehicle-list">
+          <article class="vehicle-row">
+            <div class="vehicle-row-copy">
               <span class="vehicle-seats">7-Seater</span>
               <h4>Toyota Alphard / Toyota Vellfire or equivalent</h4>
               <ul class="bullets"><li>Ideal for smaller groups looking for a comfortable private transfer or tour vehicle.</li><li>Luggage-to-Guest Capacity: 1-4 guests with up to 4 bags, approx. 28 inches or smaller.</li></ul>
             </div>
+            <div class="vehicle-row-media">
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/toyota-alphard.jpg" alt="Toyota Alphard 7-Seater MPV for Your Travel Guide private transfers and tours in Japan, showing seat layout and luggage capacity" loading="lazy" decoding="async"></div>
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/toyota-vellfire.jpg" alt="Toyota Vellfire 7-Seater MPV for Your Travel Guide private transfers and tours in Japan, showing seat layout and luggage capacity" loading="lazy" decoding="async"></div>
+            </div>
           </article>
-          <article class="card vehicle-card">
-            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/10-seater.jpg" alt="10-Seater vehicle used for private transfers and tours in Japan" loading="lazy" decoding="async"></div>
-            <div class="vehicle-body">
+          <article class="vehicle-row">
+            <div class="vehicle-row-copy">
               <span class="vehicle-seats">10-Seater</span>
               <h4>Toyota Hi-Ace or equivalent</h4>
               <ul class="bullets"><li>A practical option for larger families and groups travelling together.</li><li>Luggage-to-Guest Capacity: 8-9 guests with up to 9 bags, approx. 28 inches or smaller.</li></ul>
             </div>
+            <div class="vehicle-row-media">
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/toyota-hi-ace.jpg" alt="Toyota Hi-Ace 10-Seater Van for Your Travel Guide private transfers and tours in Japan, showing seat layout and luggage capacity" loading="lazy" decoding="async"></div>
+            </div>
           </article>
-          <article class="card vehicle-card">
-            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/14-seater.jpg" alt="14-Seater vehicle used for private transfers and tours in Japan" loading="lazy" decoding="async"></div>
-            <div class="vehicle-body">
+          <article class="vehicle-row">
+            <div class="vehicle-row-copy">
               <span class="vehicle-seats">14-Seater</span>
               <h4>Toyota Hi-Ace or equivalent</h4>
               <ul class="bullets"><li>Designed for larger groups who want to travel together in one private vehicle.</li></ul>
             </div>
+            <div class="vehicle-row-media">
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/toyota-hi-ace-commuter.jpg" alt="Toyota Hi-Ace Commuter 14-Seater Van for Your Travel Guide private transfers and tours in Japan, showing seat layout and luggage capacity" loading="lazy" decoding="async"></div>
+            </div>
           </article>
-          <article class="card vehicle-card">
-            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/22-seater.jpg" alt="22-Seater vehicle used for private transfers and tours in Japan" loading="lazy" decoding="async"></div>
-            <div class="vehicle-body">
+          <article class="vehicle-row">
+            <div class="vehicle-row-copy">
               <span class="vehicle-seats">22-Seater</span>
               <h4>Toyota Coaster / Mitsubishi Rosa or equivalent</h4>
               <ul class="bullets"><li>Our larger group option for private tours and transfers.</li></ul>
+            </div>
+            <div class="vehicle-row-media">
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/toyota-coaster.jpg" alt="Toyota Coaster 22-Seater Minibus for Your Travel Guide private transfers and tours in Japan, showing seat layout and luggage capacity" loading="lazy" decoding="async"></div>
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/mitsubishi-rosa.jpg" alt="Mitsubishi Rosa 22-Seater Minibus for Your Travel Guide private transfers and tours in Japan, showing seat layout and luggage capacity" loading="lazy" decoding="async"></div>
             </div>
           </article>
         </div>
@@ -1220,29 +1249,38 @@
           <h3>Vehicle Types</h3>
         </div>
         <p>Our China vehicle options are designed to accommodate different group sizes, from smaller private transfers to larger groups travelling together.</p>
-        <div class="vehicle-grid">
-          <article class="card vehicle-card">
-            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/china/5-seater.jpg" alt="5-Seater vehicle used for private transfers and tours in China" loading="lazy" decoding="async"></div>
-            <div class="vehicle-body">
+        <div class="vehicle-list">
+          <article class="vehicle-row">
+            <div class="vehicle-row-copy">
               <span class="vehicle-seats">5-Seater</span>
               <h4>BYD Han / E-QM5 or similar</h4>
               <ul class="bullets"><li>A comfortable option for smaller groups looking for a convenient private transfer or tour vehicle.</li></ul>
             </div>
+            <div class="vehicle-row-media">
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/china/byd-han.jpg" alt="BYD Han 5-Seater Sedan for Your Travel Guide private transfers and tours in China, showing seat layout and luggage capacity" loading="lazy" decoding="async"></div>
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/china/hongqi-e-qm5.jpg" alt="Hongqi E-QM5 5-Seater Sedan for Your Travel Guide private transfers and tours in China, showing seat layout and luggage capacity" loading="lazy" decoding="async"></div>
+            </div>
           </article>
-          <article class="card vehicle-card">
-            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/china/7-seater.jpg" alt="7-Seater vehicle used for private transfers and tours in China" loading="lazy" decoding="async"></div>
-            <div class="vehicle-body">
+          <article class="vehicle-row">
+            <div class="vehicle-row-copy">
               <span class="vehicle-seats">7-Seater</span>
               <h4>Buick GL8 / Voyah Dreamer / Denza D9 or similar</h4>
               <ul class="bullets"><li>A spacious option for families and small groups who prefer to travel together in one private vehicle.</li></ul>
             </div>
+            <div class="vehicle-row-media">
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/china/buick-gl8.jpg" alt="Buick GL8 7-Seater MPV for Your Travel Guide private transfers and tours in China, showing seat layout and luggage capacity" loading="lazy" decoding="async"></div>
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/china/voyah-dreamer.jpg" alt="Voyah Dreamer 7-Seater MPV for Your Travel Guide private transfers and tours in China, showing seat layout and luggage capacity" loading="lazy" decoding="async"></div>
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/china/denza-d9.jpg" alt="Denza D9 7-Seater MPV for Your Travel Guide private transfers and tours in China, showing seat layout and luggage capacity" loading="lazy" decoding="async"></div>
+            </div>
           </article>
-          <article class="card vehicle-card">
-            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/china/24-seater.jpg" alt="24-Seater vehicle used for private transfers and tours in China" loading="lazy" decoding="async"></div>
-            <div class="vehicle-body">
+          <article class="vehicle-row">
+            <div class="vehicle-row-copy">
               <span class="vehicle-seats">24-Seater</span>
               <h4>Toyota Coaster or similar</h4>
               <ul class="bullets"><li>A practical option for larger groups travelling together, providing additional seating for group transfers and tours.</li></ul>
+            </div>
+            <div class="vehicle-row-media">
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/china/24-seater.jpg" alt="24-Seater vehicle used for private transfers and tours in China" loading="lazy" decoding="async"></div>
             </div>
           </article>
         </div>
@@ -1428,37 +1466,46 @@
           <h3>Vehicle Types</h3>
         </div>
         <p>Our Hong Kong vehicle options are designed for private transfers and tours while keeping group size, luggage, and the city's parking limitations in mind.</p>
-        <div class="vehicle-grid">
-          <article class="card vehicle-card">
-            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/hong-kong/5-seater.jpg" alt="5-Seater vehicle used for private transfers and tours in Hong Kong" loading="lazy" decoding="async"></div>
-            <div class="vehicle-body">
+        <div class="vehicle-list">
+          <article class="vehicle-row">
+            <div class="vehicle-row-copy">
               <span class="vehicle-seats">5-Seater</span>
               <h4>Toyota Camry or equivalent</h4>
               <ul class="bullets"><li>A comfortable option for smaller groups travelling around Hong Kong.</li><li>Luggage-to-Guest Capacity: 1-3 guests with up to 3 bags, approximately 28 inches or smaller.</li></ul>
             </div>
+            <div class="vehicle-row-media">
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/hong-kong/toyota-camry.jpg" alt="Toyota Camry 5-Seater Sedan for Your Travel Guide private transfers and tours in Hong Kong, showing seat layout and luggage capacity" loading="lazy" decoding="async"></div>
+            </div>
           </article>
-          <article class="card vehicle-card">
-            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/hong-kong/5-seater-tesla.jpg" alt="5-Seater Tesla vehicle used for private transfers and tours in Hong Kong" loading="lazy" decoding="async"></div>
-            <div class="vehicle-body">
+          <article class="vehicle-row">
+            <div class="vehicle-row-copy">
               <span class="vehicle-seats">5-Seater Tesla</span>
               <h4>Tesla Model S / Model X or equivalent</h4>
               <ul class="bullets"><li>A premium vehicle option for smaller groups looking for a more stylish and comfortable private ride.</li></ul>
             </div>
+            <div class="vehicle-row-media">
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/hong-kong/tesla-model-s.jpg" alt="Tesla Model S 5-Seater Sedan for Your Travel Guide private transfers and tours in Hong Kong, showing seat layout and luggage capacity" loading="lazy" decoding="async"></div>
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/hong-kong/tesla-model-x.jpg" alt="Tesla Model X 5-Seater Sedan for Your Travel Guide private transfers and tours in Hong Kong, showing seat layout and luggage capacity" loading="lazy" decoding="async"></div>
+            </div>
           </article>
-          <article class="card vehicle-card">
-            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/hong-kong/7-seater.jpg" alt="7-Seater vehicle used for private transfers and tours in Hong Kong" loading="lazy" decoding="async"></div>
-            <div class="vehicle-body">
+          <article class="vehicle-row">
+            <div class="vehicle-row-copy">
               <span class="vehicle-seats">7-Seater</span>
               <h4>Toyota Voxy / Toyota Noah or equivalent</h4>
               <ul class="bullets"><li>A practical option for families and small groups travelling together.</li><li>Luggage-to-Guest Capacity: 4-6 guests with up to 5 bags, approximately 28 inches or smaller.</li></ul>
             </div>
+            <div class="vehicle-row-media">
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/hong-kong/toyota-voxy.jpg" alt="Toyota Voxy 7-Seater MPV for Your Travel Guide private transfers and tours in Hong Kong, showing seat layout and luggage capacity" loading="lazy" decoding="async"></div>
+            </div>
           </article>
-          <article class="card vehicle-card">
-            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/hong-kong/8-seater.jpg" alt="8-Seater vehicle used for private transfers and tours in Hong Kong" loading="lazy" decoding="async"></div>
-            <div class="vehicle-body">
+          <article class="vehicle-row">
+            <div class="vehicle-row-copy">
               <span class="vehicle-seats">8-Seater</span>
               <h4>Toyota Alphard or equivalent</h4>
               <ul class="bullets"><li>A spacious option for larger families or groups who prefer to travel together in one private vehicle.</li><li>Luggage-to-Guest Capacity: 7 guests with up to 5 bags, approximately 28 inches or smaller.</li></ul>
+            </div>
+            <div class="vehicle-row-media">
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/hong-kong/toyota-alphard.jpg" alt="Toyota Alphard 7-Seater MPV for Your Travel Guide private transfers and tours in Hong Kong, showing seat layout and luggage capacity" loading="lazy" decoding="async"></div>
             </div>
           </article>
         </div>
@@ -1645,21 +1692,25 @@
           <h3>Vehicle Types</h3>
         </div>
         <p>We recommend choosing the vehicle that best fits your group size and travel needs. Vehicle models may be replaced with an equivalent model depending on availability.</p>
-        <div class="vehicle-grid">
-          <article class="card vehicle-card">
-            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/macau/7-seater.jpg" alt="7-Seater vehicle used for private transfers and tours in Macau" loading="lazy" decoding="async"></div>
-            <div class="vehicle-body">
+        <div class="vehicle-list">
+          <article class="vehicle-row">
+            <div class="vehicle-row-copy">
               <span class="vehicle-seats">7-Seater</span>
               <h4>Toyota Alphard 30 series</h4>
               <ul class="bullets"><li>Ideal for smaller groups looking for a comfortable private transfer or tour vehicle.</li><li>Luggage-to-Guest Capacity: 1-4 guests with up to 4 bags, approx. 28 inches or smaller.</li></ul>
             </div>
+            <div class="vehicle-row-media">
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/macau/toyota-alphard.jpg" alt="Toyota Alphard 7-Seater MPV for Your Travel Guide private transfers and tours in Macau, showing seat layout and luggage capacity" loading="lazy" decoding="async"></div>
+            </div>
           </article>
-          <article class="card vehicle-card">
-            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/macau/22-seater.jpg" alt="22-Seater vehicle used for private transfers and tours in Macau" loading="lazy" decoding="async"></div>
-            <div class="vehicle-body">
+          <article class="vehicle-row">
+            <div class="vehicle-row-copy">
               <span class="vehicle-seats">22-Seater</span>
               <h4>Toyota Coaster / Mitsubishi Rosa or equivalent</h4>
               <ul class="bullets"><li>Our larger group option for private tours and transfers.</li></ul>
+            </div>
+            <div class="vehicle-row-media">
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/macau/toyota-coaster.jpg" alt="Toyota Coaster 22-Seater Minibus for Your Travel Guide private transfers and tours in Macau, showing seat layout and luggage capacity" loading="lazy" decoding="async"></div>
             </div>
           </article>
         </div>
@@ -1847,29 +1898,37 @@
           <h3>Vehicle Types</h3>
         </div>
         <p>We recommend choosing the vehicle that best fits your group size and travel needs. Vehicle models may be replaced with an equivalent model depending on availability.</p>
-        <div class="vehicle-grid">
-          <article class="card vehicle-card">
-            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/singapore/7-seater.jpg" alt="7-Seater vehicle used for private transfers and tours in Singapore" loading="lazy" decoding="async"></div>
-            <div class="vehicle-body">
+        <div class="vehicle-list">
+          <article class="vehicle-row">
+            <div class="vehicle-row-copy">
               <span class="vehicle-seats">7-Seater</span>
               <h4>Toyota Noah / Honda Freed / Toyota Sienta / Nissan Serena or equivalent</h4>
               <ul class="bullets"><li>A practical option for families and small groups travelling together.</li><li>Luggage-to-Guest Capacity: 1-4 guests with up to 4 bags, approx. 28 inches or smaller.</li></ul>
             </div>
+            <div class="vehicle-row-media">
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/singapore/honda-freed.jpg" alt="Honda Freed 7-Seater MPV for Your Travel Guide private transfers and tours in Singapore, showing seat layout and luggage capacity" loading="lazy" decoding="async"></div>
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/singapore/toyota-sienta.jpg" alt="Toyota Sienta 7-Seater MPV for Your Travel Guide private transfers and tours in Singapore, showing seat layout and luggage capacity" loading="lazy" decoding="async"></div>
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/singapore/nissan-serena.jpg" alt="Nissan Serena 7-Seater MPV for Your Travel Guide private transfers and tours in Singapore, showing seat layout and luggage capacity" loading="lazy" decoding="async"></div>
+            </div>
           </article>
-          <article class="card vehicle-card">
-            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/singapore/9-11-13-seater.jpg" alt="9-Seater / 11-Seater / 13-Seater vehicle used for private transfers and tours in Singapore" loading="lazy" decoding="async"></div>
-            <div class="vehicle-body">
+          <article class="vehicle-row">
+            <div class="vehicle-row-copy">
               <span class="vehicle-seats">9-Seater / 11-Seater / 13-Seater</span>
               <h4>Toyota Hi-Ace or equivalent</h4>
               <ul class="bullets"><li>A spacious option for larger groups who prefer travelling together in one private vehicle.</li><li>Luggage-to-Guest Capacity: 5-6 guests with up to 6 bags, approx. 28 inches or smaller.</li></ul>
             </div>
+            <div class="vehicle-row-media">
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/singapore/9-11-13-seater.jpg" alt="9-Seater / 11-Seater / 13-Seater vehicle used for private transfers and tours in Singapore" loading="lazy" decoding="async"></div>
+            </div>
           </article>
-          <article class="card vehicle-card">
-            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/singapore/19-seater.jpg" alt="19-Seater vehicle used for private transfers and tours in Singapore" loading="lazy" decoding="async"></div>
-            <div class="vehicle-body">
+          <article class="vehicle-row">
+            <div class="vehicle-row-copy">
               <span class="vehicle-seats">19-Seater</span>
               <h4>Mitsubishi Rosa or equivalent</h4>
               <ul class="bullets"><li>A suitable option for larger groups travelling together for private transfers and tours.</li></ul>
+            </div>
+            <div class="vehicle-row-media">
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/singapore/mitsubishi-rosa.jpg" alt="Mitsubishi Rosa 19-Seater Minibus for Your Travel Guide private transfers and tours in Singapore, showing seat layout and luggage capacity" loading="lazy" decoding="async"></div>
             </div>
           </article>
         </div>
@@ -2048,37 +2107,45 @@
           <h3>Vehicle Types</h3>
         </div>
         <p>We recommend choosing the vehicle that best fits your group size and travel needs. Vehicle models may be replaced with an equivalent model depending on availability.</p>
-        <div class="vehicle-grid">
-          <article class="card vehicle-card">
-            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/south-korea/6-seater.jpg" alt="6-Seater vehicle used for private transfers and tours in South Korea" loading="lazy" decoding="async"></div>
-            <div class="vehicle-body">
+        <div class="vehicle-list">
+          <article class="vehicle-row">
+            <div class="vehicle-row-copy">
               <span class="vehicle-seats">6-Seater</span>
               <h4>Kia Carnival or equivalent</h4>
               <ul class="bullets"><li>A comfortable and practical option for families and small groups travelling together.</li><li>Luggage-to-Guest Capacity: 1-4 guests with up to 4 bags, approx. 28 inches or smaller.</li></ul>
             </div>
+            <div class="vehicle-row-media">
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/south-korea/kia-carnival.jpg" alt="Kia Carnival 6-Seater MPV for Your Travel Guide private transfers and tours in South Korea, showing seat layout and luggage capacity" loading="lazy" decoding="async"></div>
+            </div>
           </article>
-          <article class="card vehicle-card">
-            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/south-korea/9-seater.jpg" alt="9-Seater vehicle used for private transfers and tours in South Korea" loading="lazy" decoding="async"></div>
-            <div class="vehicle-body">
+          <article class="vehicle-row">
+            <div class="vehicle-row-copy">
               <span class="vehicle-seats">9-Seater</span>
               <h4>Hyundai Staria or equivalent</h4>
               <ul class="bullets"><li>A spacious option for families and small groups who need additional seating and luggage capacity.</li><li>Luggage-to-Guest Capacity: 5-6 guests with up to 6 bags, approx. 28 inches or smaller.</li></ul>
             </div>
+            <div class="vehicle-row-media">
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/south-korea/hyundai-staria.jpg" alt="Hyundai Staria 9-Seater MPV for Your Travel Guide private transfers and tours in South Korea, showing seat layout and luggage capacity" loading="lazy" decoding="async"></div>
+            </div>
           </article>
-          <article class="card vehicle-card">
-            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/south-korea/14-seater.jpg" alt="14-Seater vehicle used for private transfers and tours in South Korea" loading="lazy" decoding="async"></div>
-            <div class="vehicle-body">
+          <article class="vehicle-row">
+            <div class="vehicle-row-copy">
               <span class="vehicle-seats">14-Seater</span>
               <h4>Hyundai Solati or equivalent</h4>
               <ul class="bullets"><li>A suitable option for larger groups travelling together for private transfers and tours.</li></ul>
             </div>
+            <div class="vehicle-row-media">
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/south-korea/hyundai-solati.jpg" alt="Hyundai Solati 14-Seater Van for Your Travel Guide private transfers and tours in South Korea, showing seat layout and luggage capacity" loading="lazy" decoding="async"></div>
+            </div>
           </article>
-          <article class="card vehicle-card">
-            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/south-korea/7-seater-luxury.jpg" alt="7-Seater Luxury Vehicle vehicle used for private transfers and tours in South Korea" loading="lazy" decoding="async"></div>
-            <div class="vehicle-body">
+          <article class="vehicle-row">
+            <div class="vehicle-row-copy">
               <span class="vehicle-seats">7-Seater Luxury Vehicle</span>
               <h4>Toyota Alphard</h4>
               <ul class="bullets"><li>A premium vehicle option for smaller groups looking for additional comfort and a more refined travel experience.</li></ul>
+            </div>
+            <div class="vehicle-row-media">
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/south-korea/toyota-alphard.jpg" alt="Toyota Alphard 7-Seater MPV for Your Travel Guide private transfers and tours in South Korea, showing seat layout and luggage capacity" loading="lazy" decoding="async"></div>
             </div>
           </article>
         </div>
@@ -2268,29 +2335,35 @@
           <h3>Vehicle Types</h3>
         </div>
         <p>We recommend choosing the vehicle that best fits your group size and travel needs. Vehicle models may be replaced with an equivalent model depending on availability.</p>
-        <div class="vehicle-grid">
-          <article class="card vehicle-card">
-            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/taiwan/5-seater.jpg" alt="5-Seater vehicle used for private transfers and tours in Taiwan" loading="lazy" decoding="async"></div>
-            <div class="vehicle-body">
+        <div class="vehicle-list">
+          <article class="vehicle-row">
+            <div class="vehicle-row-copy">
               <span class="vehicle-seats">5-Seater</span>
               <h4>Toyota Cross or equivalent</h4>
               <ul class="bullets"><li>A practical option for smaller groups travelling around Taiwan.</li><li>Luggage-to-Guest Capacity: 1-4 guests with up to 3 bags, approx. 20 inches or smaller.</li></ul>
             </div>
+            <div class="vehicle-row-media">
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/taiwan/toyota-cross.jpg" alt="Toyota Cross 5-Seater Crossover for Your Travel Guide private transfers and tours in Taiwan, showing seat layout and luggage capacity" loading="lazy" decoding="async"></div>
+            </div>
           </article>
-          <article class="card vehicle-card">
-            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/taiwan/7-seater-luxury.jpg" alt="7-Seater Luxury vehicle used for private transfers and tours in Taiwan" loading="lazy" decoding="async"></div>
-            <div class="vehicle-body">
+          <article class="vehicle-row">
+            <div class="vehicle-row-copy">
               <span class="vehicle-seats">7-Seater Luxury</span>
               <h4>Toyota Alphard or equivalent</h4>
               <ul class="bullets"><li>A premium option for families and small groups looking for additional comfort during private transfers and tours.</li><li>Luggage-to-Guest Capacity: 1-5 guests with up to 2 bags, approx. 27 inches or smaller.</li></ul>
             </div>
+            <div class="vehicle-row-media">
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/taiwan/toyota-alphard.jpg" alt="Toyota Alphard 7-Seater MPV for Your Travel Guide private transfers and tours in Taiwan, showing seat layout and luggage capacity" loading="lazy" decoding="async"></div>
+            </div>
           </article>
-          <article class="card vehicle-card">
-            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/taiwan/9-seater.jpg" alt="9-Seater vehicle used for private transfers and tours in Taiwan" loading="lazy" decoding="async"></div>
-            <div class="vehicle-body">
+          <article class="vehicle-row">
+            <div class="vehicle-row-copy">
               <span class="vehicle-seats">9-Seater</span>
               <h4>Hyundai Staria or similar</h4>
               <ul class="bullets"><li>A spacious option for larger families and groups travelling together.</li><li>Luggage-to-Guest Capacity: 1-7 guests with up to 7 bags, approx. 28 inches or smaller.</li></ul>
+            </div>
+            <div class="vehicle-row-media">
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/taiwan/9-seater.jpg" alt="9-Seater vehicle used for private transfers and tours in Taiwan" loading="lazy" decoding="async"></div>
             </div>
           </article>
         </div>
@@ -2457,29 +2530,37 @@
           <h3>Vehicle Types</h3>
         </div>
         <p>We recommend choosing the vehicle that best fits your group size and travel needs. Vehicle models may be replaced with an equivalent model depending on availability.</p>
-        <div class="vehicle-grid">
-          <article class="card vehicle-card">
-            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/thailand/4-seater-sedan.jpg" alt="4-Seater Sedan vehicle used for private transfers and tours in Thailand" loading="lazy" decoding="async"></div>
-            <div class="vehicle-body">
+        <div class="vehicle-list">
+          <article class="vehicle-row">
+            <div class="vehicle-row-copy">
               <span class="vehicle-seats">4-Seater Sedan</span>
               <h4>Toyota Vios / Honda City / Honda Accord / Nissan Teana or equivalent</h4>
               <ul class="bullets"><li>A comfortable option for smaller groups travelling around Thailand.</li><li>Luggage-to-Guest Capacity: 1&ndash;3 guests with up to 2 bags, approximately 28 inches or smaller.</li></ul>
             </div>
+            <div class="vehicle-row-media">
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/thailand/toyota-vios.jpg" alt="Toyota Vios 4-Seater Sedan for Your Travel Guide private transfers and tours in Thailand, showing seat layout and luggage capacity" loading="lazy" decoding="async"></div>
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/thailand/honda-city.jpg" alt="Honda City 4-Seater Sedan for Your Travel Guide private transfers and tours in Thailand, showing seat layout and luggage capacity" loading="lazy" decoding="async"></div>
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/thailand/nissan-teana.jpg" alt="Nissan Teana 4-Seater Sedan for Your Travel Guide private transfers and tours in Thailand, showing seat layout and luggage capacity" loading="lazy" decoding="async"></div>
+            </div>
           </article>
-          <article class="card vehicle-card">
-            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/thailand/5-seater-mpv.jpg" alt="5-Seater MPV vehicle used for private transfers and tours in Thailand" loading="lazy" decoding="async"></div>
-            <div class="vehicle-body">
+          <article class="vehicle-row">
+            <div class="vehicle-row-copy">
               <span class="vehicle-seats">5-Seater MPV</span>
               <h4>Toyota Innova / Toyota Fortuner / Mitsubishi Pajero or equivalent</h4>
               <ul class="bullets"><li>A practical option for families and small groups who need additional luggage and passenger space.</li><li>Luggage-to-Guest Capacity: 1&ndash;4 guests with up to 4 bags, approximately 28 inches or smaller.</li></ul>
             </div>
+            <div class="vehicle-row-media">
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/thailand/5-seater-mpv.jpg" alt="5-Seater MPV vehicle used for private transfers and tours in Thailand" loading="lazy" decoding="async"></div>
+            </div>
           </article>
-          <article class="card vehicle-card">
-            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/thailand/10-seater-van.jpg" alt="10-Seater Van vehicle used for private transfers and tours in Thailand" loading="lazy" decoding="async"></div>
-            <div class="vehicle-body">
+          <article class="vehicle-row">
+            <div class="vehicle-row-copy">
               <span class="vehicle-seats">10-Seater Van</span>
               <h4>Toyota Hi-Ace Commuter or equivalent</h4>
               <ul class="bullets"><li>A spacious option for larger families and groups travelling together.</li><li>Luggage-to-Guest Capacity: 5&ndash;9 guests with up to 5 bags, approximately 28 inches or smaller.</li></ul>
+            </div>
+            <div class="vehicle-row-media">
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/thailand/10-seater-van.jpg" alt="10-Seater Van vehicle used for private transfers and tours in Thailand" loading="lazy" decoding="async"></div>
             </div>
           </article>
         </div>
@@ -2661,29 +2742,36 @@
           <h3>Vehicle Types</h3>
         </div>
         <p>We recommend choosing the vehicle that best fits your group size and travel needs. Vehicle models may be replaced with an equivalent model depending on availability.</p>
-        <div class="vehicle-grid">
-          <article class="card vehicle-card">
-            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/vietnam/7-seater.jpg" alt="7-Seater vehicle used for private transfers and tours in Vietnam" loading="lazy" decoding="async"></div>
-            <div class="vehicle-body">
+        <div class="vehicle-list">
+          <article class="vehicle-row">
+            <div class="vehicle-row-copy">
               <span class="vehicle-seats">7-Seater</span>
               <h4>Mitsubishi Xpander / Toyota Avanza / Toyota Innova or equivalent</h4>
               <ul class="bullets"><li>A practical option for families and small groups travelling together.</li><li>Luggage-to-Guest Capacity: 1-3 guests with up to 2 bags, approximately 28 inches or smaller.</li></ul>
             </div>
+            <div class="vehicle-row-media">
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/vietnam/toyota-avanza.jpg" alt="Toyota Avanza 7-Seater MPV for Your Travel Guide private transfers and tours in Vietnam, showing seat layout and luggage capacity" loading="lazy" decoding="async"></div>
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/vietnam/toyota-innova.jpg" alt="Toyota Innova 7-Seater MPV for Your Travel Guide private transfers and tours in Vietnam, showing seat layout and luggage capacity" loading="lazy" decoding="async"></div>
+            </div>
           </article>
-          <article class="card vehicle-card">
-            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/vietnam/16-seater.jpg" alt="16-Seater vehicle used for private transfers and tours in Vietnam" loading="lazy" decoding="async"></div>
-            <div class="vehicle-body">
+          <article class="vehicle-row">
+            <div class="vehicle-row-copy">
               <span class="vehicle-seats">16-Seater</span>
               <h4>Ford Transit or equivalent</h4>
               <ul class="bullets"><li>A spacious option for larger groups travelling together.</li><li>Luggage-to-Guest Capacity: 1&ndash;4 guests with up to 4 bags, approximately 28 inches or smaller.</li></ul>
             </div>
+            <div class="vehicle-row-media">
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/vietnam/16-seater.jpg" alt="16-Seater vehicle used for private transfers and tours in Vietnam" loading="lazy" decoding="async"></div>
+            </div>
           </article>
-          <article class="card vehicle-card">
-            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/vietnam/29-seater.jpg" alt="29-Seater vehicle used for private transfers and tours in Vietnam" loading="lazy" decoding="async"></div>
-            <div class="vehicle-body">
+          <article class="vehicle-row">
+            <div class="vehicle-row-copy">
               <span class="vehicle-seats">29-Seater</span>
               <h4>Mitsubishi Rosa / Hyundai County or equivalent</h4>
               <ul class="bullets"><li>A suitable option for larger groups requiring additional seating capacity.</li></ul>
+            </div>
+            <div class="vehicle-row-media">
+              <div class="dest-media vehicle-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/vietnam/29-seater.jpg" alt="29-Seater vehicle used for private transfers and tours in Vietnam" loading="lazy" decoding="async"></div>
             </div>
           </article>
         </div>
