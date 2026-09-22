@@ -616,6 +616,21 @@
     .terms-table tr + tr th{border-top:1px solid var(--line);}
   }
 
+  /* ---- Vehicle Types filter ------------------------------------------ */
+  .vfilter[hidden]{display:none;}
+  .vfilter{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px;}
+  .vfilter-btn{
+    padding:8px 16px;border-radius:99px;cursor:pointer;
+    background:var(--surface);border:1.5px solid var(--line);color:var(--ink-soft);
+    font-family:inherit;font-size:.86rem;font-weight:600;white-space:nowrap;
+    transition:border-color .2s var(--ease),color .2s var(--ease),background .2s var(--ease);
+  }
+  .vfilter-btn:hover{border-color:var(--line-strong);color:var(--ink);}
+  .vfilter-btn.is-on{background:var(--gradient);border-color:transparent;color:#fff;}
+  .vfilter-count[hidden]{display:none;}
+  .vfilter-count{margin-top:16px;color:var(--ink-faint);font-size:.9rem;}
+  .vtile.is-filtered-out{display:none;}
+
   /* ---- Vehicle Types tiles ------------------------------------------- */
   .vtile-grid{
     margin-top:18px;display:grid;gap:16px;grid-template-columns:repeat(2,minmax(0,1fr));
@@ -1087,8 +1102,18 @@
           <h3>Vehicle Types</h3>
         </div>
         <p>We recommend choosing the vehicle that best fits your group size and travel needs. Vehicle models may be replaced with an equivalent model depending on availability.</p>
+        <div class="vfilter" id="vfilter-japan" role="group" aria-label="Filter vehicles by seat capacity" hidden>
+          <button class="vfilter-btn is-on" type="button" data-seats="all" aria-pressed="true">All</button>
+          <button class="vfilter-btn" type="button" data-seats="7-Seater" aria-pressed="false">7-Seater</button>
+          <button class="vfilter-btn" type="button" data-seats="10-Seater" aria-pressed="false">10-Seater</button>
+          <button class="vfilter-btn" type="button" data-seats="14-Seater" aria-pressed="false">14-Seater</button>
+          <button class="vfilter-btn" type="button" data-seats="22-Seater" aria-pressed="false">22-Seater</button>
+          <button class="vfilter-btn" type="button" data-seats="30-Seater" aria-pressed="false">30-Seater</button>
+          <button class="vfilter-btn" type="button" data-seats="45-Seater" aria-pressed="false">45-Seater</button>
+          <button class="vfilter-btn" type="button" data-seats="49-Seater" aria-pressed="false">49-Seater</button>
+        </div>
         <div class="vtile-grid">
-          <article class="vtile">
+          <article class="vtile" data-seats="7-Seater">
             <div class="dest-media vtile-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/tiles/toyota-alphard.jpg" alt="Toyota Alphard used for Your Travel Guide private transfers and tours in Japan" loading="lazy" decoding="async"></div>
             <div class="vtile-body">
               <h4>Toyota Alphard</h4>
@@ -1096,7 +1121,7 @@
             </div>
             <button class="vtile-more" type="button" data-card="assets/vehicles/japan/cards/toyota-alphard.jpg" data-model="7-Seater Toyota Alphard" aria-label="See the seating and luggage layout for the 7-Seater Toyota Alphard"><svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></button>
           </article>
-          <article class="vtile">
+          <article class="vtile" data-seats="7-Seater">
             <div class="dest-media vtile-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/tiles/toyota-vellfire.jpg" alt="Toyota Vellfire used for Your Travel Guide private transfers and tours in Japan" loading="lazy" decoding="async"></div>
             <div class="vtile-body">
               <h4>Toyota Vellfire</h4>
@@ -1104,7 +1129,7 @@
             </div>
             <button class="vtile-more" type="button" data-card="assets/vehicles/japan/cards/toyota-vellfire.jpg" data-model="7-Seater Toyota Vellfire" aria-label="See the seating and luggage layout for the 7-Seater Toyota Vellfire"><svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></button>
           </article>
-          <article class="vtile">
+          <article class="vtile" data-seats="10-Seater">
             <div class="dest-media vtile-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/tiles/toyota-hi-ace.jpg" alt="Toyota Hi-Ace used for Your Travel Guide private transfers and tours in Japan" loading="lazy" decoding="async"></div>
             <div class="vtile-body">
               <h4>Toyota Hi-Ace</h4>
@@ -1112,7 +1137,7 @@
             </div>
             <button class="vtile-more" type="button" data-card="assets/vehicles/japan/cards/toyota-hi-ace.jpg" data-model="10-Seater Toyota Hi-Ace" aria-label="See the seating and luggage layout for the 10-Seater Toyota Hi-Ace"><svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></button>
           </article>
-          <article class="vtile">
+          <article class="vtile" data-seats="10-Seater">
             <div class="dest-media vtile-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/tiles/nissan-nv350-caravan.jpg" alt="Nissan NV350 Caravan used for Your Travel Guide private transfers and tours in Japan" loading="lazy" decoding="async"></div>
             <div class="vtile-body">
               <h4>Nissan NV350 Caravan</h4>
@@ -1120,7 +1145,7 @@
             </div>
             <button class="vtile-more" type="button" data-card="assets/vehicles/japan/cards/nissan-nv350-caravan.jpg" data-model="10-Seater Nissan NV350 Caravan" aria-label="See the seating and luggage layout for the 10-Seater Nissan NV350 Caravan"><svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></button>
           </article>
-          <article class="vtile">
+          <article class="vtile" data-seats="14-Seater">
             <div class="dest-media vtile-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/tiles/toyota-hi-ace-commuter.jpg" alt="Toyota Hi-Ace Commuter used for Your Travel Guide private transfers and tours in Japan" loading="lazy" decoding="async"></div>
             <div class="vtile-body">
               <h4>Toyota Hi-Ace Commuter</h4>
@@ -1128,7 +1153,7 @@
             </div>
             <button class="vtile-more" type="button" data-card="assets/vehicles/japan/cards/toyota-hi-ace-commuter.jpg" data-model="14-Seater Toyota Hi-Ace Commuter" aria-label="See the seating and luggage layout for the 14-Seater Toyota Hi-Ace Commuter"><svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></button>
           </article>
-          <article class="vtile">
+          <article class="vtile" data-seats="22-Seater">
             <div class="dest-media vtile-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/tiles/toyota-coaster.jpg" alt="Toyota Coaster used for Your Travel Guide private transfers and tours in Japan" loading="lazy" decoding="async"></div>
             <div class="vtile-body">
               <h4>Toyota Coaster</h4>
@@ -1136,7 +1161,7 @@
             </div>
             <button class="vtile-more" type="button" data-card="assets/vehicles/japan/cards/toyota-coaster.jpg" data-model="22-Seater Toyota Coaster" aria-label="See the seating and luggage layout for the 22-Seater Toyota Coaster"><svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></button>
           </article>
-          <article class="vtile">
+          <article class="vtile" data-seats="22-Seater">
             <div class="dest-media vtile-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/tiles/mitsubishi-rosa.jpg" alt="Mitsubishi Rosa used for Your Travel Guide private transfers and tours in Japan" loading="lazy" decoding="async"></div>
             <div class="vtile-body">
               <h4>Mitsubishi Rosa</h4>
@@ -1144,7 +1169,7 @@
             </div>
             <button class="vtile-more" type="button" data-card="assets/vehicles/japan/cards/mitsubishi-rosa.jpg" data-model="22-Seater Mitsubishi Rosa" aria-label="See the seating and luggage layout for the 22-Seater Mitsubishi Rosa"><svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></button>
           </article>
-          <article class="vtile">
+          <article class="vtile" data-seats="30-Seater">
             <div class="dest-media vtile-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/tiles/hino-bus-30-seater.jpg" alt="Hino Bus used for Your Travel Guide private transfers and tours in Japan" loading="lazy" decoding="async"></div>
             <div class="vtile-body">
               <h4>Hino Bus</h4>
@@ -1152,7 +1177,7 @@
             </div>
             <button class="vtile-more" type="button" data-card="assets/vehicles/japan/cards/hino-bus-30-seater.jpg" data-model="30-Seater Hino Bus" aria-label="See the seating and luggage layout for the 30-Seater Hino Bus"><svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></button>
           </article>
-          <article class="vtile">
+          <article class="vtile" data-seats="45-Seater">
             <div class="dest-media vtile-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/tiles/hino-bus-45-seater.jpg" alt="Hino Bus used for Your Travel Guide private transfers and tours in Japan" loading="lazy" decoding="async"></div>
             <div class="vtile-body">
               <h4>Hino Bus</h4>
@@ -1160,7 +1185,7 @@
             </div>
             <button class="vtile-more" type="button" data-card="assets/vehicles/japan/cards/hino-bus-45-seater.jpg" data-model="45-Seater Hino Bus" aria-label="See the seating and luggage layout for the 45-Seater Hino Bus"><svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></button>
           </article>
-          <article class="vtile">
+          <article class="vtile" data-seats="45-Seater">
             <div class="dest-media vtile-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/tiles/isuzu-bus-45-seater.jpg" alt="Isuzu Bus used for Your Travel Guide private transfers and tours in Japan" loading="lazy" decoding="async"></div>
             <div class="vtile-body">
               <h4>Isuzu Bus</h4>
@@ -1168,7 +1193,7 @@
             </div>
             <button class="vtile-more" type="button" data-card="assets/vehicles/japan/cards/isuzu-bus-45-seater.jpg" data-model="45-Seater Isuzu Bus" aria-label="See the seating and luggage layout for the 45-Seater Isuzu Bus"><svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></button>
           </article>
-          <article class="vtile">
+          <article class="vtile" data-seats="49-Seater">
             <div class="dest-media vtile-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/tiles/hino-bus-49-seater.jpg" alt="Hino Bus used for Your Travel Guide private transfers and tours in Japan" loading="lazy" decoding="async"></div>
             <div class="vtile-body">
               <h4>Hino Bus</h4>
@@ -1177,6 +1202,7 @@
             <button class="vtile-more" type="button" data-card="assets/vehicles/japan/cards/hino-bus-49-seater.jpg" data-model="49-Seater Hino Bus" aria-label="See the seating and luggage layout for the 49-Seater Hino Bus"><svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></button>
           </article>
         </div>
+        <p class="vfilter-count" id="vfilter-count-japan" role="status" hidden></p>
         <p class="photo-note">*Vehicle types and colors are subject to availability. Actual units may vary on the tour date based on operational needs.</p>
 
         <div class="country-subhead">
@@ -3162,6 +3188,48 @@
       if(!lb.hidden && (e.key === 'Escape' || e.key === 'Esc')) closeCard();
     });
   }
+
+  /* ---- Vehicle Types filter ----
+     The bar is hidden in the markup and revealed here, so with JS off the
+     reader simply sees every vehicle rather than buttons that do nothing. */
+  Array.prototype.forEach.call(document.querySelectorAll('.vfilter'), function(bar){
+    var panel = bar.closest('.country-panel');
+    if(!panel) return;
+    var tiles = panel.querySelectorAll('.vtile');
+    var count = panel.querySelector('.vfilter-count');
+    if(!tiles.length) return;
+    bar.hidden = false;
+
+    var apply = function(want){
+      var shown = 0;
+      Array.prototype.forEach.call(tiles, function(tile){
+        var hit = want === 'all' || tile.getAttribute('data-seats') === want;
+        tile.classList.toggle('is-filtered-out', !hit);
+        if(hit) shown++;
+      });
+      if(count){
+        if(want === 'all'){
+          count.hidden = true;
+          count.textContent = '';
+        } else {
+          count.hidden = false;
+          count.textContent = 'Showing ' + shown + ' ' + want +
+            (shown === 1 ? ' vehicle.' : ' vehicles.');
+        }
+      }
+    };
+
+    bar.addEventListener('click', function(e){
+      var btn = e.target.closest('.vfilter-btn');
+      if(!btn || !bar.contains(btn)) return;
+      Array.prototype.forEach.call(bar.querySelectorAll('.vfilter-btn'), function(b){
+        var on = b === btn;
+        b.classList.toggle('is-on', on);
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+      apply(btn.getAttribute('data-seats'));
+    });
+  });
 
 })();
 </script>
