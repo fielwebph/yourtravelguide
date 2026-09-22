@@ -630,8 +630,11 @@
     transition:border-color .2s var(--ease),box-shadow .2s var(--ease);
   }
   .vtile:hover{border-color:var(--line-strong);box-shadow:var(--shadow-sm);}
+  /* The tile photos are cut-outs on white, so the divider .dest-media draws
+     under a real photo only reads as a stray line here. */
   .vtile-shot{
     aspect-ratio:4/3;border-radius:calc(var(--radius-md) - 4px);background:var(--surface-2);
+    border-bottom:0;
   }
   .vtile-shot:not(.has-photo){border:1px dashed var(--line-strong);}
   .vtile-shot .icon{width:22px;height:22px;}
@@ -654,6 +657,12 @@
   .vtile-more:hover{transform:scale(1.08);}
   .vtile-more:active{transform:scale(.96);}
   .vtile-more .icon{width:18px;height:18px;}
+  /* Two-up tiles on a phone are too narrow to give up 44px to an overlapping
+     button, so below that the arrow drops into the flow under the tags. */
+  @media (max-width:560px){
+    .vtile-body{padding-right:0;}
+    .vtile-more{position:static;margin:12px 0 0 auto;}
+  }
 
   /* ---- Vehicle card lightbox ----------------------------------------- */
   .vlightbox[hidden]{display:none;}
@@ -1137,17 +1146,31 @@
             <button class="vtile-more" type="button" data-card="assets/vehicles/japan/mitsubishi-rosa.jpg" data-model="Mitsubishi Rosa" aria-label="See the seating and luggage layout for the Mitsubishi Rosa"><svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></button>
           </article>
           <article class="vtile">
-            <div class="dest-media vtile-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/tiles/hino-bus.jpg" alt="Hino Bus used for Your Travel Guide private transfers and tours in Japan" loading="lazy" decoding="async"></div>
+            <div class="dest-media vtile-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/tiles/hino-bus-30-seater.jpg" alt="Hino Bus used for Your Travel Guide private transfers and tours in Japan" loading="lazy" decoding="async"></div>
             <div class="vtile-body">
               <h4>Hino Bus</h4>
               <p class="vtile-tags"><span>Hino</span><span>30-Seater</span></p>
             </div>
           </article>
           <article class="vtile">
-            <div class="dest-media vtile-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/tiles/isuzu-bus.jpg" alt="Isuzu Bus used for Your Travel Guide private transfers and tours in Japan" loading="lazy" decoding="async"></div>
+            <div class="dest-media vtile-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/tiles/hino-bus-45-seater.jpg" alt="Hino Bus used for Your Travel Guide private transfers and tours in Japan" loading="lazy" decoding="async"></div>
+            <div class="vtile-body">
+              <h4>Hino Bus</h4>
+              <p class="vtile-tags"><span>Hino</span><span>45-Seater</span></p>
+            </div>
+          </article>
+          <article class="vtile">
+            <div class="dest-media vtile-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/tiles/isuzu-bus-45-seater.jpg" alt="Isuzu Bus used for Your Travel Guide private transfers and tours in Japan" loading="lazy" decoding="async"></div>
             <div class="vtile-body">
               <h4>Isuzu Bus</h4>
-              <p class="vtile-tags"><span>Isuzu</span><span>30-Seater</span></p>
+              <p class="vtile-tags"><span>Isuzu</span><span>45-Seater</span></p>
+            </div>
+          </article>
+          <article class="vtile">
+            <div class="dest-media vtile-shot"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/tiles/hino-bus-49-seater.jpg" alt="Hino Bus used for Your Travel Guide private transfers and tours in Japan" loading="lazy" decoding="async"></div>
+            <div class="vtile-body">
+              <h4>Hino Bus</h4>
+              <p class="vtile-tags"><span>Hino</span><span>49-Seater</span></p>
             </div>
           </article>
         </div>
