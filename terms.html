@@ -474,6 +474,17 @@
   .bank-card{padding:20px 22px;}
   .bank-card:hover{transform:none;box-shadow:var(--shadow-sm);border-color:var(--line);}
   .bank-name{font-weight:800;font-size:1rem;color:var(--dark);margin-bottom:12px;}
+  .bank-head{display:flex;align-items:center;}
+  /* Collapsed to nothing until a real logo loads, so a card without one looks
+     exactly as it did before. Width and opacity, never display:none: a
+     display:none image is never fetched, so it could never load and reveal
+     itself. The margin rides on .has-photo so an empty slot adds no gap. */
+  .bank-logo{
+    flex:none;width:0;overflow:hidden;opacity:0;
+    transition:opacity .3s var(--ease);
+  }
+  .bank-logo.has-photo{width:auto;opacity:1;margin-right:10px;}
+  .bank-logo img{display:block;height:26px;width:auto;max-width:110px;object-fit:contain;}
   .bank-row + .bank-row{margin-top:10px;padding-top:10px;border-top:1px solid var(--line);}
   .bank-label{font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);}
   .bank-value{margin-top:3px;font-weight:600;color:var(--dark);font-size:.97rem;word-break:break-word;}
@@ -846,12 +857,12 @@
         <p>For clients paying remotely using a credit card via PayPal, a 6% processing fee will apply to the total transaction amount.</p>
         <p class="sub-head">Digital Wallets</p>
         <p>We accept secure transfers via digital wallets, including PayPal and Gcash.</p>
-        <div class="bank-grid"><div class="card bank-card"><div class="bank-name">Gcash</div><div class="bank-row"><div class="bank-label">Account Name</div><div class="bank-value">Paula Andrea Rivera</div></div><div class="bank-row"><div class="bank-label">Account Number</div><div class="bank-value">0917 627 2233</div></div></div><div class="card bank-card"><div class="bank-name">PayPal</div><div class="bank-row"><div class="bank-label">Account Name</div><div class="bank-value">Your Travel Guide Company</div></div><div class="bank-row"><div class="bank-label">Email address</div><div class="bank-value">yourtravelguideco@gmail.com</div></div></div></div>
+        <div class="bank-grid"><div class="card bank-card"><div class="bank-head"><span class="bank-logo"><img src="assets/logos/gcash.png" alt="" loading="lazy" decoding="async"></span><div class="bank-name">Gcash</div></div><div class="bank-row"><div class="bank-label">Account Name</div><div class="bank-value">Paula Andrea Rivera</div></div><div class="bank-row"><div class="bank-label">Account Number</div><div class="bank-value">0917 627 2233</div></div></div><div class="card bank-card"><div class="bank-head"><span class="bank-logo"><img src="assets/logos/paypal.png" alt="" loading="lazy" decoding="async"></span><div class="bank-name">PayPal</div></div><div class="bank-row"><div class="bank-label">Account Name</div><div class="bank-value">Your Travel Guide Company</div></div><div class="bank-row"><div class="bank-label">Email address</div><div class="bank-value">yourtravelguideco@gmail.com</div></div></div></div>
         <p>Remote payments processed via PayPal are subject to a 6% processing fee on the total transaction amount.</p>
         <p class="sub-head">Bank Transfers</p>
         <p>You may settle your payment directly through telegraphic transfer or local bank deposit. To ensure your payment is credited correctly, please input your Booking Reference Number in the bank description or memo field.</p>
         <h4>Philippine Bank Accounts (Local Deposits &amp; Transfers)</h4>
-        <div class="bank-grid"><div class="card bank-card"><div class="bank-name">BPI</div><div class="bank-row"><div class="bank-label">Account Name</div><div class="bank-value">THE VARIER GROUP INC.</div></div><div class="bank-row"><div class="bank-label">Account Number</div><div class="bank-value">8591 0012 49</div></div></div><div class="card bank-card"><div class="bank-name">Unionbank</div><div class="bank-row"><div class="bank-label">Account Name</div><div class="bank-value">YOUR TRAVEL GUIDE TOURIST TRANSPORT SERVICES</div></div><div class="bank-row"><div class="bank-label">Account Number</div><div class="bank-value">1025 5003 2614</div></div></div><div class="card bank-card"><div class="bank-name">BDO</div><div class="bank-row"><div class="bank-label">Account Name</div><div class="bank-value">YOUR TRAVEL GUIDE TOURIST TRANSPORT SERVICES</div></div><div class="bank-row"><div class="bank-label">Account Number</div><div class="bank-value">0001 9049 1515</div></div></div><div class="card bank-card"><div class="bank-name">Security Bank</div><div class="bank-row"><div class="bank-label">Account Name</div><div class="bank-value">YOUR TRAVEL GUIDE TOURIST TRANSPORT SERVICES</div></div><div class="bank-row"><div class="bank-label">Account Number</div><div class="bank-value">00000 7952 3129</div></div></div></div>
+        <div class="bank-grid"><div class="card bank-card"><div class="bank-head"><span class="bank-logo"><img src="assets/logos/bpi.png" alt="" loading="lazy" decoding="async"></span><div class="bank-name">BPI</div></div><div class="bank-row"><div class="bank-label">Account Name</div><div class="bank-value">THE VARIER GROUP INC.</div></div><div class="bank-row"><div class="bank-label">Account Number</div><div class="bank-value">8591 0012 49</div></div></div><div class="card bank-card"><div class="bank-head"><span class="bank-logo"><img src="assets/logos/unionbank.png" alt="" loading="lazy" decoding="async"></span><div class="bank-name">Unionbank</div></div><div class="bank-row"><div class="bank-label">Account Name</div><div class="bank-value">YOUR TRAVEL GUIDE TOURIST TRANSPORT SERVICES</div></div><div class="bank-row"><div class="bank-label">Account Number</div><div class="bank-value">1025 5003 2614</div></div></div><div class="card bank-card"><div class="bank-head"><span class="bank-logo"><img src="assets/logos/bdo.png" alt="" loading="lazy" decoding="async"></span><div class="bank-name">BDO</div></div><div class="bank-row"><div class="bank-label">Account Name</div><div class="bank-value">YOUR TRAVEL GUIDE TOURIST TRANSPORT SERVICES</div></div><div class="bank-row"><div class="bank-label">Account Number</div><div class="bank-value">0001 9049 1515</div></div></div><div class="card bank-card"><div class="bank-head"><span class="bank-logo"><img src="assets/logos/security-bank.png" alt="" loading="lazy" decoding="async"></span><div class="bank-name">Security Bank</div></div><div class="bank-row"><div class="bank-label">Account Name</div><div class="bank-value">YOUR TRAVEL GUIDE TOURIST TRANSPORT SERVICES</div></div><div class="bank-row"><div class="bank-label">Account Number</div><div class="bank-value">00000 7952 3129</div></div></div></div>
         <div class="callout"><svg class="icon" aria-hidden="true"><use href="#i-sparkles"/></svg><p>Note: QR codes are not available for BDO, BPI, and Security Bank accounts.</p></div>
         <p class="sub-head">Cash Payments</p>
         <p>Cash payments are only available for in-person or meet-up transactions at our Angeles City office. Meet-ups are available for tours costing ₱150,000 and above. Please contact our support team to schedule an appointment.</p>
@@ -3146,7 +3157,7 @@
      Every slot renders its "photo to be added" placeholder by default; drop a
      file at the path in the <img> src and it reveals itself on load. Nothing
      ever shows as a broken image. */
-  Array.prototype.forEach.call(document.querySelectorAll('.dest-media'), function(media){
+  Array.prototype.forEach.call(document.querySelectorAll('.dest-media, .bank-logo'), function(media){
     var img = media.querySelector('img');
     if(!img) return;
     var reveal = function(){ if(img.naturalWidth) media.classList.add('has-photo'); };
