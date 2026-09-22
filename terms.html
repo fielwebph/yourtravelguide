@@ -618,6 +618,9 @@
     border-right:1px solid var(--line);
   }
   .terms-table td{color:var(--ink-soft);line-height:1.65;}
+  /* A cell can hold several paragraphs and a list, so space them apart;
+     without this the run-on reads as one block of text. */
+  .terms-table td > * + *{margin-top:10px;}
   /* Stack on narrow screens: a 34/66 split leaves the label column too tight
      to read once the viewport is phone-width. */
   @media (max-width:640px){
@@ -1101,9 +1104,9 @@
         <div class="terms-table-wrap">
           <table class="terms-table">
             <tbody>
-              <tr><th scope="row">Peak Dates and Additional Charges</th><td>A seasonal surcharge of 20–30% may apply during peak travel periods, including Cherry Blossom Season and the Christmas and New Year holidays. Rates vary depending on your travel dates and selected service, so we recommend booking early and confirming the final price with our travel specialists.</td></tr>
-              <tr><th scope="row">Tipping</th><td>Tipping is not required. However, if you&#8217;re happy and satisfied with your driver&#8217;s service, a tip is always appreciated as a gesture of thanks.</td></tr>
-              <tr><th scope="row">Minibuses &amp; buses</th><td>Published rates and availability for our 22-seater minibus are subject to change. Please confirm vehicle availability and the final price with our travel specialists before booking.</td></tr>
+              <tr><th scope="row">Peak Dates and Additional Charges</th><td><p>A seasonal surcharge of 20–30% may apply during peak travel periods, including Cherry Blossom Season and the Christmas and New Year holidays. Rates vary depending on your travel dates and selected service, so we recommend booking early and confirming the final price with our travel specialists.</p></td></tr>
+              <tr><th scope="row">Tipping</th><td><p>Tipping is not required. However, if you&#8217;re happy and satisfied with your driver&#8217;s service, a tip is always appreciated as a gesture of thanks.</p></td></tr>
+              <tr><th scope="row">Minibuses &amp; buses</th><td><p>Published rates and availability for our 22-seater minibus are subject to change. Please confirm vehicle availability and the final price with our travel specialists before booking.</p></td></tr>
             </tbody>
           </table>
         </div>
@@ -1921,8 +1924,7 @@
         <ul class="terms-list">
           <li class="card terms-item">
             <div class="terms-item-head">
-              <span class="terms-roman" aria-hidden="true">I.</span>
-              <h4>Standard Operating Hours</h4>
+              <h4>Service Hours</h4>
             </div>
             <div class="terms-body">
         <p>Our standard operating hours are 6:30 - 23:30 Singapore Time.</p>
@@ -1930,8 +1932,7 @@
           </li>
           <li class="card terms-item">
             <div class="terms-item-head">
-              <span class="terms-roman" aria-hidden="true">II.</span>
-              <h4>After-Hours Surcharge</h4>
+              <h4>Surcharge</h4>
             </div>
             <div class="terms-body">
         <p>Services scheduled outside our standard operating hours are subject to a SGD 12 after-hours surcharge, payable in advance.</p>
@@ -1939,7 +1940,15 @@
           </li>
           <li class="card terms-item">
             <div class="terms-item-head">
-              <span class="terms-roman" aria-hidden="true">III.</span>
+              <h4>Pick-up waiting time</h4>
+            </div>
+            <div class="terms-body">
+        <p>For airport pick-ups, 60 minutes of complimentary waiting time is provided starting from the flight&#8217;s official landing time. Additional waiting beyond the complimentary period will be subject to applicable overtime charges based on the vehicle booked.</p>
+        <p>For airport drop-offs and city transfers, a 15-minute complimentary grace period applies from the scheduled pick-up time. Waiting beyond this time period will be subject to applicable overtime charges.</p>
+            </div>
+          </li>
+          <li class="card terms-item">
+            <div class="terms-item-head">
               <h4>Overtime Fees</h4>
             </div>
             <div class="terms-body">
@@ -1949,63 +1958,24 @@
           </li>
           <li class="card terms-item">
             <div class="terms-item-head">
-              <span class="terms-roman" aria-hidden="true">IV.</span>
-              <h4>Service Inclusions</h4>
+              <h4>What&#8217;s Included and not included</h4>
             </div>
             <div class="terms-body">
-        <p>Your private transfer or tour service includes:</p>
-        <ul class="bullets"><li>Fuel</li><li>Parking and toll fees</li><li>Driver's meal allowance</li><li>Professional service fee</li></ul>
+        <p>Your private transfer or tour includes:</p>
+        <ul class="bullets"><li>Fuel</li><li>Parking and toll fees</li><li>Driver&#8217;s meal allowance</li><li>Professional service fee</li></ul>
+        <div class="callout"><svg class="icon" aria-hidden="true"><use href="#i-sparkles"/></svg><p>Personal expenses and admission or entry tickets are not included.</p></div>
             </div>
           </li>
           <li class="card terms-item">
             <div class="terms-item-head">
-              <span class="terms-roman" aria-hidden="true">V.</span>
-              <h4>Service Exclusions</h4>
-            </div>
-            <div class="terms-body">
-        <ul class="bullets"><li>Personal expenses and entry tickets</li></ul>
-            </div>
-          </li>
-          <li class="card terms-item">
-            <div class="terms-item-head">
-              <span class="terms-roman" aria-hidden="true">VI.</span>
               <h4>Cancellation Policy</h4>
             </div>
             <div class="terms-body">
         <p>Cancellations made 5 days before the scheduled service will incur a 10% cancellation fee.</p>
-        <p>No refunds will be provided for cancellations made within 4 days of the scheduled service.</p>
             </div>
           </li>
           <li class="card terms-item">
             <div class="terms-item-head">
-              <span class="terms-roman" aria-hidden="true">VII.</span>
-              <h4>Airport Meet &amp; Greet</h4>
-            </div>
-            <div class="terms-body">
-        <p>Airport Meet &amp; Greet service is available for an additional SGD 12, payable in advance.</p>
-            </div>
-          </li>
-          <li class="card terms-item">
-            <div class="terms-item-head">
-              <span class="terms-roman" aria-hidden="true">VIII.</span>
-              <h4>Airport Pick-Up Waiting Time</h4>
-            </div>
-            <div class="terms-body">
-        <p>For airport pick-ups, 60 minutes of complimentary waiting time is provided starting from the flight's official landing time. Additional waiting beyond the complimentary period will be subject to applicable overtime charges based on the vehicle booked.</p>
-            </div>
-          </li>
-          <li class="card terms-item">
-            <div class="terms-item-head">
-              <span class="terms-roman" aria-hidden="true">IX.</span>
-              <h4>Airport Drop-Off &amp; City Transfer Waiting Time</h4>
-            </div>
-            <div class="terms-body">
-        <p>For airport drop-offs and city transfers, a 15-minute complimentary grace period applies from the scheduled pick-up time. Waiting beyond this time period will be subject to applicable overtime charges.</p>
-            </div>
-          </li>
-          <li class="card terms-item">
-            <div class="terms-item-head">
-              <span class="terms-roman" aria-hidden="true">X.</span>
               <h4>Luggage Allowance</h4>
             </div>
             <div class="terms-body">
@@ -2015,27 +1985,6 @@
           </li>
           <li class="card terms-item">
             <div class="terms-item-head">
-              <span class="terms-roman" aria-hidden="true">XI.</span>
-              <h4>Peak Dates and Additional Charges</h4>
-            </div>
-            <div class="terms-body">
-        <p>Additional charges may apply for transfers to and from outlying locations, including:</p>
-        <ul class="bullets"><li>Jurong</li><li>Tuas</li><li>Pioneer</li><li>Boon Lay</li></ul>
-        <p>Please confirm the applicable surcharges with our travel specialists when making your booking.</p>
-            </div>
-          </li>
-          <li class="card terms-item">
-            <div class="terms-item-head">
-              <span class="terms-roman" aria-hidden="true">XII.</span>
-              <h4>Cleaning Fee</h4>
-            </div>
-            <div class="terms-body">
-        <p>Cleaning fees start at SGD 300 and may vary depending on the condition of the vehicle. This may include mess caused by trash, vomit, urine, or other conditions requiring additional cleaning.</p>
-            </div>
-          </li>
-          <li class="card terms-item">
-            <div class="terms-item-head">
-              <span class="terms-roman" aria-hidden="true">XIII.</span>
               <h4>Baby Car Seat</h4>
             </div>
             <div class="terms-body">
@@ -2046,23 +1995,38 @@
           </li>
           <li class="card terms-item">
             <div class="terms-item-head">
-              <span class="terms-roman" aria-hidden="true">XIV.</span>
-              <h4>Tipping</h4>
+              <h4>Airport Meet &amp; Greet</h4>
             </div>
             <div class="terms-body">
-        <p>Tipping is not required. However, if you're happy and satisfied with your driver's service, a tip is always appreciated as a gesture of thanks.</p>
+        <p>Airport Meet &amp; Greet service is available for an additional SGD 12, payable in advance.</p>
             </div>
           </li>
           <li class="card terms-item">
             <div class="terms-item-head">
-              <span class="terms-roman" aria-hidden="true">XV.</span>
-              <h4>Additional Information</h4>
+              <h4>Cleaning Fee</h4>
             </div>
             <div class="terms-body">
-        <p>For tours, the recommended service time is between 08:00&ndash;18:00 Singapore Time.</p>
+        <p>Cleaning fees start at SGD 300 and may vary depending on the condition of the vehicle. This may include mess caused by trash, vomit, urine, or other conditions requiring additional cleaning.</p>
             </div>
           </li>
         </ul>
+
+        <div class="country-subhead">
+          <span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-compass"/></svg></span>
+          <h3>Additional Terms and Information</h3>
+        </div>
+        <div class="terms-table-wrap">
+          <table class="terms-table">
+            <tbody>
+              <tr><th scope="row">Peak Dates and Additional Charges</th><td><p>Additional charges may apply for transfers to and from outlying locations, including:</p>
+        <ul class="bullets"><li>Jurong</li><li>Tuas</li><li>Pioneer</li><li>Boon Lay</li></ul>
+        <p>Please confirm the applicable surcharges with our travel specialists when making your booking.</p></td></tr>
+              <tr><th scope="row">Tipping</th><td><p>Tipping is not required. However, if you&#8217;re happy and satisfied with your driver&#8217;s service, a tip is always appreciated as a gesture of thanks.</p></td></tr>
+              <tr><th scope="row">Minibuses &amp; buses</th><td><p>Please note that this large bus is subject to limited availability. Kindly inform us of pickup-time changes in advance, as they depend on the driver&#8217;s schedule and an alternative vehicle may not be available at short notice.</p>
+        <p>The bus is reserved exclusively for 8 hours, and the full charge applies even if it is used for less time. Extensions are subject to availability and additional hourly charges.</p></td></tr>
+            </tbody>
+          </table>
+        </div>
 
         <div class="country-subhead">
           <span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-car-luggage"/></svg></span>
