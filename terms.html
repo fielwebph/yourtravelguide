@@ -571,13 +571,12 @@
   .gallery-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:24px;}
   @media (min-width:900px){ .gallery-grid{grid-template-columns:repeat(4,1fr);} }
   .gallery-item{margin:0;}
-  /* Square on narrow screens so the two-up tiles stay tall enough for the
-     placeholder label; 4:3 once the grid goes four-up and each tile is wider. */
+  /* Square at every width: Paula's service photos are square, so a 4:3 tile
+     would crop the top and bottom off each one. */
   .gallery-item .dest-media{
     aspect-ratio:1/1;border:1px solid var(--line);border-radius:var(--radius-md);
     background:var(--surface-2);
   }
-  @media (min-width:900px){ .gallery-item .dest-media{aspect-ratio:4/3;} }
   .gallery-item .dest-media:not(.has-photo){border:1px dashed var(--line-strong);}
   .gallery-item .dest-media .icon{width:24px;height:24px;}
   .gallery-item .dest-media-empty{gap:8px;padding:14px;}
@@ -1187,16 +1186,52 @@
         <p>See our actual vehicles during private transfers and tours across Japan.</p>
         <div class="gallery-grid">
           <figure class="gallery-item">
-            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/action-1.jpg" alt="Your Travel Guide vehicle on a private transfer or tour in Japan" loading="lazy" decoding="async"></div>
+            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/action/action-01.jpg" alt="White Toyota Hi-Ace parked before a private transfer in Japan" loading="lazy" decoding="async"></div>
           </figure>
           <figure class="gallery-item">
-            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/action-2.jpg" alt="Your Travel Guide vehicle on a private transfer or tour in Japan" loading="lazy" decoding="async"></div>
+            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/action/action-02.jpg" alt="Black Toyota Alphard pulling away on a Sapporo street during a private transfer" loading="lazy" decoding="async"></div>
           </figure>
           <figure class="gallery-item">
-            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/action-3.jpg" alt="Your Travel Guide vehicle on a private transfer or tour in Japan" loading="lazy" decoding="async"></div>
+            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/action/action-03.jpg" alt="Close view of the tailgate of a black Toyota Alphard used for private transfers in Japan" loading="lazy" decoding="async"></div>
           </figure>
           <figure class="gallery-item">
-            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/action-4.jpg" alt="Your Travel Guide vehicle on a private transfer or tour in Japan" loading="lazy" decoding="async"></div>
+            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/action/action-04.jpg" alt="Black Toyota Alphard waiting at a hotel entrance for a private transfer" loading="lazy" decoding="async"></div>
+          </figure>
+          <figure class="gallery-item">
+            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/action/action-05.jpg" alt="Front of a black Toyota Alphard on a rainy day in Japan" loading="lazy" decoding="async"></div>
+          </figure>
+          <figure class="gallery-item">
+            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/action/action-06.jpg" alt="Black Toyota Hi-Ace on a narrow residential street in Japan" loading="lazy" decoding="async"></div>
+          </figure>
+          <figure class="gallery-item">
+            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/action/action-07.jpg" alt="Black Toyota Alphard parked beside Kobe Port Tower during a private tour" loading="lazy" decoding="async"></div>
+          </figure>
+          <figure class="gallery-item">
+            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/action/action-08.jpg" alt="Front of a black Toyota Vellfire used for private transfers in Japan" loading="lazy" decoding="async"></div>
+          </figure>
+          <figure class="gallery-item">
+            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/action/action-09.jpg" alt="White Toyota Hi-Ace on a wet street at night in Japan" loading="lazy" decoding="async"></div>
+          </figure>
+          <figure class="gallery-item">
+            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/action/action-10.jpg" alt="Guest luggage loaded into the back of a Toyota Hi-Ace after an airport pick-up" loading="lazy" decoding="async"></div>
+          </figure>
+          <figure class="gallery-item">
+            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/action/action-11.jpg" alt="White Toyota Hi-Ace on a tree-lined street during a private tour in Japan" loading="lazy" decoding="async"></div>
+          </figure>
+          <figure class="gallery-item">
+            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/action/action-12.jpg" alt="Black Toyota Alphard parked before a private tour in Japan" loading="lazy" decoding="async"></div>
+          </figure>
+          <figure class="gallery-item">
+            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/action/action-13.jpg" alt="Front of a black and silver Toyota Hi-Ace used for private transfers in Japan" loading="lazy" decoding="async"></div>
+          </figure>
+          <figure class="gallery-item">
+            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/action/action-14.jpg" alt="Black Toyota Alphard waiting outside an office building in Japan" loading="lazy" decoding="async"></div>
+          </figure>
+          <figure class="gallery-item">
+            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/action/action-15.jpg" alt="Black Toyota Alphard at an airport terminal for a private transfer" loading="lazy" decoding="async"></div>
+          </figure>
+          <figure class="gallery-item">
+            <div class="dest-media"><div class="dest-media-empty"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><span>Photo to be added</span></div><img src="assets/vehicles/japan/action/action-16.jpg" alt="Guest suitcases stowed in the cabin of a Your Travel Guide van in Japan" loading="lazy" decoding="async"></div>
           </figure>
         </div>
         <p class="photo-note">*Vehicle photos shown are from our actual services and are provided as a reference. Specific vehicle models may vary depending on availability.</p>
